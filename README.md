@@ -1,5 +1,7 @@
 # i18n for Virtual DOM (``i18n4v``)
 
+[![Build Status](https://secure.travis-ci.org/shibukawa/i18n4v.png?branch=master)](http://travis-ci.org/shibukawa/i18n4v)
+
 ```sh
 $ npm install i18n4v --save
 ```
