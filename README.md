@@ -17,6 +17,7 @@ It has the following features:
   * Selecting translations from context (like gender)
 * Small runtime:
   * Runtime is written in ES3 and just 1.6kb (minified and gzipped)
+  * Runtime library doesn't have any dependencies.
   * It is compatible with common.js and AMD and global reading with ``<script>`` tag.
 * It can run on browser:
   * With virtual DOM (in JavaScript)
