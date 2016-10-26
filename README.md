@@ -15,7 +15,7 @@ It has the following features:
   * Selecting translations from context (like gender)
 * Small runtime:
   * Runtime is written in ES3 and just 1.6kb (minified and gzipped)
-  * It is compatible with common.js and AMD and global reading with <script> tag.
+  * It is compatible with common.js and AMD and global reading with ``<script>`` tag.
 * It can run on browser:
   * With virtual DOM (in JavaScript)
   * With static HTML text
@@ -24,7 +24,7 @@ It has the following features:
   * To support server side rendering and CLI tools
 * It provides CLI tool to maintain translations
 
-Core part of i18n is derived from `roddeh-i18n <http://i18njs.com/>`_. Thank you roddeh.
+Core part of i18n is derived from [roddeh-i18n](http://i18njs.com/). Thank you roddeh.
 
 ## Example
 
