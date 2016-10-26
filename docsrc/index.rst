@@ -46,11 +46,6 @@ Content
    api
    examples
 
-.. toctree::
-   :hidden:
-
-   unittest
-
 Example
 -------
 
