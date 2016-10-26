@@ -1,0 +1,281 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Tutorial &#8212; i18n for virtual dom 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Command Line Interface" href="cli.html" />
+    <link rel="prev" title="i18n for Virtual DOM (i18n4v)" href="index.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="index.html">
+          <span>i18n for virtual dom 0.1.0 documentation</span></a></h1>
+        <h2 class="heading"><span>Tutorial</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        «&#160;&#160;<a href="index.html">i18n for Virtual DOM (<code class="docutils literal"><span class="pre">i18n4v</span></code>)</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="cli.html">Command Line Interface</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="tutorial">
+<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Translation API is 100% compatible with <a class="reference external" href="http://i18njs.com/">i18njs</a>. You can see it to learn how to use it.</p>
+</div>
+<div class="section" id="install-to-your-application">
+<h2>Install to your Application<a class="headerlink" href="#install-to-your-application" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">i18n4v</span></code> provides two items:</p>
+<ul class="simple">
+<li>Runtime library: <code class="docutils literal"><span class="pre">index.js</span></code>. It is written in ES3 and compatible with common.js and AMD.</li>
+<li>CLI tool: <code class="docutils literal"><span class="pre">i18n4v</span></code>. It is for node.js. It maintains translation files.</li>
+</ul>
+<div class="code console highlight-default"><div class="highlight"><pre><span></span>$ npm install i18n4v --save
+</pre></div>
+</div>
+<p>It is an npm package. You can use it from node.js application like this:</p>
+<div class="code js highlight-default"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">i18n</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;i18n4v&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>For browsers, you can use Browserify, WebPack, require.js to load runtime library. Also you can read it via script tag.</p>
+</div>
+<div class="section" id="simple-translation">
+<h2>Simple Translation<a class="headerlink" href="#simple-translation" title="Permalink to this headline">¶</a></h2>
+<div class="code js highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span>  <span class="n">Adds</span> <span class="n">data</span> <span class="n">that</span> <span class="ow">is</span> <span class="n">used</span> <span class="n">to</span> <span class="n">translate</span>
+<span class="n">i18n</span><span class="o">.</span><span class="n">translator</span><span class="o">.</span><span class="n">add</span><span class="p">({</span>
+    <span class="n">values</span><span class="p">:{</span>
+        <span class="s2">&quot;Hello&quot;</span><span class="p">:</span> <span class="s2">&quot;こんにちは&quot;</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="o">//</span>  <span class="n">Then</span> <span class="n">translate</span> <span class="n">something</span>
+<span class="n">i18n</span><span class="p">(</span><span class="s2">&quot;Hello&quot;</span><span class="p">);</span>  <span class="o">//</span> <span class="o">-&gt;</span> <span class="n">こんにちは</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pluralisation">
+<h2>Pluralisation<a class="headerlink" href="#pluralisation" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">i18n4v</span></code> treats the changing words by a number of things. You can specify Array as a translation word. Each entries has <code class="docutils literal"><span class="pre">[min,</span> <span class="pre">max,</span> <span class="pre">translation]</span></code> members:</p>
+<div class="code js highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;%n comments&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;%n comments&quot;</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;%n comment&quot;</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="n">null</span><span class="p">,</span> <span class="s2">&quot;%n comments&quot;</span><span class="p">]</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">i18n4v</span></code> selects the translation by the <code class="docutils literal"><span class="pre">min</span></code> and <code class="docutils literal"><span class="pre">max</span></code> range:</p>
+<div class="code js highlight-default"><div class="highlight"><pre><span></span><span class="n">i18n</span><span class="p">(</span><span class="s2">&quot;%n comments&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>    <span class="o">//</span>  <span class="o">-&gt;</span> <span class="mi">0</span> <span class="n">comments</span>
+<span class="n">i18n</span><span class="p">(</span><span class="s2">&quot;%n comments&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>    <span class="o">//</span>  <span class="o">-&gt;</span> <span class="mi">1</span> <span class="n">comment</span>
+<span class="n">i18n</span><span class="p">(</span><span class="s2">&quot;%n comments&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>    <span class="o">//</span>  <span class="o">-&gt;</span> <span class="mi">2</span> <span class="n">comments</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="formatting">
+<h2>Formatting<a class="headerlink" href="#formatting" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">i18n4v</span></code> replaces placeholders with supplied values:</p>
+<div class="code js highlight-default"><div class="highlight"><pre><span></span><span class="n">i18n</span><span class="p">(</span><span class="s2">&quot;Welcome %</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="n">name</span><span class="p">:</span><span class="s2">&quot;John&quot;</span> <span class="p">});</span>    <span class="o">//</span>  <span class="o">-&gt;</span> <span class="n">Welcome</span> <span class="n">John</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="context">
+<h2>Context<a class="headerlink" href="#context" title="Permalink to this headline">¶</a></h2>
+<p>Some languages&#8217; words have several forms by extra information like gender.</p>
+<div class="code js highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;Yes&quot;</span><span class="p">:</span> <span class="s2">&quot;Yes&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;No&quot;</span><span class="p">:</span> <span class="s2">&quot;No&quot;</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;contexts&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;matches&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;male&quot;</span><span class="p">},</span>
+      <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;%</span><span class="si">{name}</span><span class="s2"> updated their profile&quot;</span><span class="p">:</span> <span class="s2">&quot;%</span><span class="si">{name}</span><span class="s2"> updated his profile&quot;</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;matches&quot;</span><span class="p">:{</span><span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;female&quot;</span><span class="p">},</span>
+      <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;%</span><span class="si">{name}</span><span class="s2"> updated their profile&quot;</span><span class="p">:</span> <span class="s2">&quot;%</span><span class="si">{name}</span><span class="s2"> updated her profile&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Third argument is used for context selecting:</p>
+<div class="code js highlight-default"><div class="highlight"><pre><span></span><span class="n">i18n</span><span class="p">(</span><span class="s2">&quot;%</span><span class="si">{name}</span><span class="s2"> updated their profile&quot;</span><span class="p">,</span>
+  <span class="p">{</span> <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="n">gender</span><span class="p">:</span> <span class="s2">&quot;male&quot;</span> <span class="p">}</span>
+<span class="p">);</span> <span class="o">//</span>  <span class="o">-&gt;</span>  <span class="n">John</span> <span class="n">updated</span> <span class="n">his</span> <span class="n">profile</span>
+
+<span class="n">i18n</span><span class="p">(</span><span class="s2">&quot;%</span><span class="si">{name}</span><span class="s2"> updated their profile&quot;</span><span class="p">,</span>
+  <span class="p">{</span> <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;Jane&quot;</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="n">gender</span><span class="p">:</span> <span class="s2">&quot;female&quot;</span> <span class="p">}</span>
+<span class="p">);</span> <span class="o">//</span>  <span class="o">-&gt;</span>  <span class="n">Jane</span> <span class="n">updated</span> <span class="n">her</span> <span class="n">profile</span>
+</pre></div>
+</div>
+<p>You can use context support and pluralisation together:</p>
+<div class="code js highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;Yes&quot;</span><span class="p">:</span> <span class="s2">&quot;はい&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;No&quot;</span><span class="p">:</span> <span class="s2">&quot;いいえ&quot;</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;contexts&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;matches&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;male&quot;</span> <span class="p">},</span>
+      <span class="s2">&quot;values&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;%</span><span class="si">{name}</span><span class="s2"> uploaded %n photos to their %</span><span class="si">{album}</span><span class="s2"> album&quot;</span><span class="p">:[</span>
+          <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;%</span><span class="si">{name}</span><span class="s2">は彼の%</span><span class="si">{album}</span><span class="s2">アルバムに写真%n枚をアップロードしました&quot;</span><span class="p">]</span>
+        <span class="p">]</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;matches&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;female&quot;</span> <span class="p">},</span>
+      <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;%</span><span class="si">{name}</span><span class="s2"> uploaded %n photos to their %</span><span class="si">{album}</span><span class="s2"> album&quot;</span><span class="p">:[</span>
+          <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;%</span><span class="si">{name}</span><span class="s2">は彼女の%</span><span class="si">{album}</span><span class="s2">アルバムに写真%n枚をアップロードしました&quot;</span><span class="p">]</span>
+        <span class="p">]</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="code js highlight-default"><div class="highlight"><pre><span></span><span class="n">i18n</span><span class="p">(</span><span class="s2">&quot;%</span><span class="si">{name}</span><span class="s2"> uploaded %n photos to their %</span><span class="si">{album}</span><span class="s2"> album&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="p">{</span> <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="n">album</span><span class="p">:</span> <span class="s2">&quot;Buck&#39;s Night&quot;</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="n">gender</span><span class="p">:</span><span class="s2">&quot;male&quot;</span> <span class="p">}</span>
+<span class="p">);</span> <span class="o">//</span>  <span class="o">-&gt;</span>  <span class="n">Johnは彼のBuck</span><span class="s1">&#39;s Nightアルバムに写真1枚をアップロードしました</span>
+
+<span class="n">i18n</span><span class="p">(</span><span class="s2">&quot;%</span><span class="si">{name}</span><span class="s2"> uploaded %n photos to their %</span><span class="si">{album}</span><span class="s2"> album&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span>
+  <span class="p">{</span> <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;Jane&quot;</span><span class="p">,</span> <span class="n">album</span><span class="p">:</span> <span class="s2">&quot;Hen&#39;s Night&quot;</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="n">gender</span><span class="p">:</span> <span class="s2">&quot;female&quot;</span> <span class="p">}</span>
+<span class="p">);</span> <span class="o">//</span>  <span class="o">-&gt;</span>  <span class="n">Janeは彼女のHen</span><span class="s1">&#39;s Nightアルバムに写真4枚をアップロードしました</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="translate-static-html">
+<h2>Translate Static HTML<a class="headerlink" href="#translate-static-html" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">i18n4v</span></code> searches tags that have <code class="docutils literal"><span class="pre">data-i18n</span></code> data attribute and replace the content:</p>
+<div class="code html highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">article</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">h1</span> <span class="n">data</span><span class="o">-</span><span class="n">i18n</span><span class="o">&gt;</span><span class="n">Monty</span> <span class="n">Python</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">artice</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">script</span><span class="o">&gt;</span>
+<span class="n">i18n</span><span class="o">.</span><span class="n">translator</span><span class="o">.</span><span class="n">add</span><span class="p">({</span>
+    <span class="n">values</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;Monty Python&quot;</span><span class="p">:</span> <span class="s2">&quot;モンティ・パイソン&quot;</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+<span class="n">i18n</span><span class="o">.</span><span class="n">translator</span><span class="o">.</span><span class="n">applyToHTML</span><span class="p">();</span>
+<span class="o">&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>If you want to specify translation key, instead of its text, add key name to the data attribute:</p>
+<div class="code html highlight-default"><div class="highlight"><pre><span></span>&lt;span data-i18n&gt;Hello World&lt;/span&gt;            &lt;!-- key is &#39;Hello World&#39; --&gt;
+&lt;span data-i18n=&quot;greeting&quot;&gt;Hello World&lt;/span&gt; &lt;!-- key is &#39;greeting&#39; --&gt;
+</pre></div>
+</div>
+<p>Static HTML feature has only limited functionality, that doesn&#8217;t support formatting and contextual translation.</p>
+<p>By default, it translates tags that only have text, ignores tags that have child tags. To replace the tag, add <code class="docutils literal"><span class="pre">data-i18n-safe</span></code> attribute or add key to the tag. If you don&#8217;t add <code class="docutils literal"><span class="pre">data-i18n-safe</span></code> attribute, <code class="docutils literal"><span class="pre">i18n4v</span></code> escape the translation automatically:</p>
+<div class="code html highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">span</span> <span class="n">data</span><span class="o">-</span><span class="n">i18n</span><span class="o">&gt;</span><span class="n">This</span> <span class="n">tag</span> <span class="n">will</span> <span class="n">be</span> <span class="n">translated</span><span class="o">&lt;/</span><span class="n">span</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">span</span> <span class="n">data</span><span class="o">-</span><span class="n">i18n</span><span class="o">&gt;&lt;</span><span class="n">b</span><span class="o">&gt;</span><span class="n">This</span> <span class="n">tag</span> <span class="n">will</span> <span class="n">be</span> <span class="n">ignored</span><span class="o">&lt;/</span><span class="n">b</span><span class="o">&gt;&lt;/</span><span class="n">span</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">span</span> <span class="n">data</span><span class="o">-</span><span class="n">i18n</span> <span class="n">data</span><span class="o">-</span><span class="n">i18n</span><span class="o">-</span><span class="n">safe</span><span class="o">&gt;&lt;</span><span class="n">b</span><span class="o">&gt;</span><span class="n">This</span> <span class="n">tag</span> <span class="n">will</span> <span class="n">be</span> <span class="n">ignored</span><span class="o">&lt;/</span><span class="n">b</span><span class="o">&gt;&lt;/</span><span class="n">span</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="selecting-preferred-language">
+<h2>Selecting Preferred Language<a class="headerlink" href="#selecting-preferred-language" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">i18n4v</span></code> chooses preferred language from passed language list. On browsers, it checks <code class="docutils literal"><span class="pre">navigator.language</span></code> and <code class="docutils literal"><span class="pre">navigator.languages</span></code> property. On node.js, it uses <a class="reference external" href="https://github.com/sindresorhus/os-locale">os-locale</a> package:</p>
+<div class="code js highlight-default"><div class="highlight"><pre><span></span>i18n.translator.selectLanguage([&#39;en&#39;, &#39;de&#39;, &#39;fr&#39;], function (err, lang) {
+    // If there is no good choice, it returns null
+    if (!lang) {
+        lang = &#39;en&#39;;
+    }
+    // load from server
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (this.readyState == 4 &amp;&amp; this.status == 200) {
+            i18n.translator.add(this.response);
+        }
+    };
+    xhr.open(&#39;GET&#39;, &#39;/assets/&#39; + lang + &#39;.json&#39;, true);
+    xhr.responseType = &#39;json&#39;;
+    xhr.send( null );
+});
+</pre></div>
+</div>
+<p>As you see in the above sample code, <code class="docutils literal"><span class="pre">i18n4v</span></code> doesn&#8217;t have any feature to load resources. Some client MVC frameworks provides feature to access server (e.g. Mithril&#8217;s request function). Use framework&#8217;s one.</p>
+<p>If your project is small and bundling all language files are not expensive, the following solution is the easiest.</p>
+<div class="code js highlight-default"><div class="highlight"><pre><span></span>var languages = {
+    en: require(&#39;./languages/en.json&#39;),
+    fr: require(&#39;./languages/fr.json&#39;),
+    de: require(&#39;./languages/de.json&#39;)
+}
+
+i18n.translator.selectLanguage([&#39;en&#39;, &#39;de&#39;, &#39;fr&#39;], function (err, lang) {
+    i18n.translator.add(languages[lang] ? languages[lang] : languages.en);
+});
+</pre></div>
+</div>
+<p>You can set preferred language manually. It feature is only on browser. It is stored in Browser&#8217;s Local Storage. This language has higher priority in <code class="docutils literal"><span class="pre">selectLanguage()</span></code>:</p>
+<div class="code js highlight-default"><div class="highlight"><pre><span></span><span class="n">i18n</span><span class="o">.</span><span class="n">translator</span><span class="o">.</span><span class="n">setLanguage</span><span class="p">(</span><span class="s1">&#39;tlh&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        «&#160;&#160;<a href="index.html">i18n for Virtual DOM (<code class="docutils literal"><span class="pre">i18n4v</span></code>)</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="cli.html">Command Line Interface</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Yoshiki Shibukawa.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5a2.
+    </div>
+  </body>
+</html>

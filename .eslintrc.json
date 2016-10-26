@@ -1,0 +1,16 @@
+{
+    "extends": ["eslint:recommended"],
+    "plugins": [],
+    "parserOptions": {},
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "mocha": true
+    },
+    "globals": {
+    },
+    "rules": {
+        "semi": "error",
+        "no-console": "off"
+    }
+}

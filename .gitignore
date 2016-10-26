@@ -1,0 +1,4 @@
+.DS_Store
+Thumbds.db
+docsrc/_build
+node_modules

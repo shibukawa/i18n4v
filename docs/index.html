@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>i18n for Virtual DOM (i18n4v) &#8212; i18n for virtual dom 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tutorial" href="tutorial.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="#">
+          <span>i18n for virtual dom 0.1.0 documentation</span></a></h1>
+        <h2 class="heading"><span>i18n for Virtual DOM (i18n4v)</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="#">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="tutorial.html">Tutorial</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="i18n-for-virtual-dom-i18n4v">
+<h1>i18n for Virtual DOM (<code class="docutils literal"><span class="pre">i18n4v</span></code>)<a class="headerlink" href="#i18n-for-virtual-dom-i18n4v" title="Permalink to this headline">¶</a></h1>
+<div class="code console highlight-default"><div class="highlight"><pre><span></span>$ npm install i18n4v --save
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">i18n4v</span></code> is an internationalization helper library for browsers and node.js.</p>
+<p>It has the following features:</p>
+<ul class="simple">
+<li>It supports standard internatinalization features:<ul>
+<li>Replacing words by key (original words can be used as keys too)</li>
+<li>Pluralisation</li>
+<li>Formatting</li>
+<li>Selecting translations from context (like gender)</li>
+</ul>
+</li>
+<li>Small runtime:<ul>
+<li>Runtime is written in ES3 and just 1.6kb (minified and gzipped)</li>
+<li>It is compatible with common.js and AMD and global reading with &lt;script&gt; tag.</li>
+</ul>
+</li>
+<li>It can run on browser:<ul>
+<li>With virtual DOM (in JavaScript)</li>
+<li>With static HTML text</li>
+</ul>
+</li>
+<li>It can run on node.js:<ul>
+<li>To make off-line unittesting easy</li>
+<li>To support server side rendering and CLI tools</li>
+</ul>
+</li>
+<li>It provides CLI tool to maintain translations</li>
+</ul>
+<p>Core part of i18n is derived from <a class="reference external" href="http://i18njs.com/">roddeh-i18n</a>. Thank you roddeh.</p>
+<div class="section" id="content">
+<h2>Content<a class="headerlink" href="#content" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#install-to-your-application">Install to your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#simple-translation">Simple Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#pluralisation">Pluralisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#formatting">Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#context">Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#translate-static-html">Translate Static HTML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#selecting-preferred-language">Selecting Preferred Language</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#instance">Instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#translator-class">Translator class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/mithril.html">Mithril Example</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>Use with JavaScript:</p>
+<div class="code js highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">This</span> <span class="n">sample</span> <span class="n">uses</span> <span class="k">with</span> <span class="n">Mithril</span><span class="o">.</span>
+<span class="o">//</span> <span class="n">You</span> <span class="n">can</span> <span class="n">use</span> <span class="nb">any</span> <span class="n">virtual</span> <span class="n">DOM</span> <span class="n">framework</span><span class="o">.</span>
+<span class="n">const</span> <span class="n">m</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;mithril&#39;</span><span class="p">);</span>
+<span class="n">const</span> <span class="n">i18n</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;i18n4v&#39;</span><span class="p">);</span>
+
+<span class="n">var</span> <span class="n">mithrilComponent</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">view</span><span class="p">(</span><span class="n">ctrl</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">m</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">,</span> <span class="n">i18n</span><span class="p">(</span><span class="s2">&quot;hello world&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">i18n</span><span class="o">.</span><span class="n">translator</span><span class="o">.</span><span class="n">add</span><span class="p">({</span>
+    <span class="n">values</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;hello world&quot;</span><span class="p">:</span> <span class="s2">&quot;こんにちわ世界&quot;</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Use with static HTML:</p>
+<div class="code html highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">article</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">h1</span> <span class="n">data</span><span class="o">-</span><span class="n">i18n</span><span class="o">&gt;</span><span class="n">Monty</span> <span class="n">Python</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">artice</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">script</span><span class="o">&gt;</span>
+<span class="n">i18n</span><span class="o">.</span><span class="n">translator</span><span class="o">.</span><span class="n">add</span><span class="p">({</span>
+    <span class="n">values</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;Monty Python&quot;</span><span class="p">:</span> <span class="s2">&quot;モンティ・パイソン&quot;</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+<span class="n">i18n</span><span class="o">.</span><span class="n">translator</span><span class="o">.</span><span class="n">applyToHTML</span><span class="p">();</span>
+<span class="o">&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://shibu.mit-license.org/">MIT</a></p>
+</div>
+<div class="section" id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="#">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="tutorial.html">Tutorial</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Yoshiki Shibukawa.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5a2.
+    </div>
+  </body>
+</html>

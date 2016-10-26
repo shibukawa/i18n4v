@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>API Reference &#8212; i18n for virtual dom 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Unittest" href="unittest.html" />
+    <link rel="prev" title="Command Line Interface" href="cli.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="index.html">
+          <span>i18n for virtual dom 0.1.0 documentation</span></a></h1>
+        <h2 class="heading"><span>API Reference</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        «&#160;&#160;<a href="cli.html">Command Line Interface</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="unittest.html">Unittest</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="instance">
+<h2>Instance<a class="headerlink" href="#instance" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">i18n4v</span></code> provides global instance:</p>
+<div class="code js highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">i18n</span> <span class="ow">is</span> <span class="n">a</span> <span class="nb">globals</span> <span class="n">instance</span><span class="s1">&#39;s translate() method</span>
+<span class="n">const</span> <span class="n">i18n</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;i18n4v&#39;</span><span class="p">);</span>
+
+<span class="o">//</span> <span class="n">i18n</span><span class="o">.</span><span class="n">translator</span> <span class="ow">is</span> <span class="n">a</span> <span class="k">global</span> <span class="n">instance</span> <span class="n">of</span> <span class="n">Translator</span>
+<span class="n">const</span> <span class="n">translator</span> <span class="o">=</span> <span class="n">i18n</span><span class="o">.</span><span class="n">translator</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Resulting object of <code class="docutils literal"><span class="pre">require()</span></code> is a just <code class="docutils literal"><span class="pre">translate()</span></code> method.
+It has property that points <code class="docutils literal"><span class="pre">Translator</span></code> instance.</p>
+<p>You can access any features from <code class="docutils literal"><span class="pre">i18n.translator</span></code>. <code class="docutils literal"><span class="pre">i18n</span></code> is for translating.</p>
+<p><code class="docutils literal"><span class="pre">i18n4v</span></code> supports multiple <code class="docutils literal"><span class="pre">Translator</span></code> instances for server usage:</p>
+<div class="code js highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">es</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">new</span> <span class="n">instance</span><span class="s1">&#39;s translate() method</span>
+<span class="n">var</span> <span class="n">es</span> <span class="o">=</span> <span class="n">i18n</span><span class="o">.</span><span class="n">create</span><span class="p">({</span>
+    <span class="n">values</span><span class="p">:</span> <span class="p">{</span>
+        <span class="n">cat</span><span class="p">:</span> <span class="s2">&quot;gato&quot;</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="o">//</span> <span class="n">es</span><span class="o">.</span><span class="n">translator</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">Translator</span> <span class="n">instance</span>
+<span class="n">const</span> <span class="n">translator</span> <span class="o">=</span> <span class="n">es</span><span class="o">.</span><span class="n">translator</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="translator-class">
+<h2>Translator class<a class="headerlink" href="#translator-class" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="Translator">
+<em class="property">class </em><code class="descname">Translator</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Translator" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a core component of <code class="docutils literal"><span class="pre">i18n4v</span></code>.</p>
+<dl class="function">
+<dt id="translate(source:string[, count:number[, formatParams:object[, context:object]]]) : string">
+<code class="descname">translate(source:string[, count:number[, formatParams:object[, context:object]]]) : string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#translate(source:string[, count:number[, formatParams:object[, context:object]]]) : string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns translated text from source string/key.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="add">
+<code class="descname">add</code><span class="sig-paren">(</span><em>resource : object</em><span class="sig-paren">)</span><a class="headerlink" href="#add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers translation resource.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="resetData">
+<code class="descname">resetData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#resetData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets translation resource that is set by <a class="reference internal" href="#add" title="add"><code class="xref js js-func docutils literal"><span class="pre">add()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="setContext">
+<code class="descname">setContext</code><span class="sig-paren">(</span><em>contextKey : string</em>, <em>contextValue : string</em><span class="sig-paren">)</span><a class="headerlink" href="#setContext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets default context. It is used by <code class="xref js js-func docutils literal"><span class="pre">translate()</span></code> if <code class="docutils literal"><span class="pre">context</span></code> parameter is omitted.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="clearContext">
+<code class="descname">clearContext</code><span class="sig-paren">(</span><em>contextKey : string</em><span class="sig-paren">)</span><a class="headerlink" href="#clearContext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears default context value specified by <code class="docutils literal"><span class="pre">contextKey</span></code> that is set by <a class="reference internal" href="#setContext" title="setContext"><code class="xref js js-func docutils literal"><span class="pre">setContext()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="resetContext">
+<code class="descname">resetContext</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#resetContext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears all default context that is set by <a class="reference internal" href="#setContext" title="setContext"><code class="xref js js-func docutils literal"><span class="pre">setContext()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>It is combined method of <a class="reference internal" href="#resetData" title="resetData"><code class="xref js js-func docutils literal"><span class="pre">resetData()</span></code></a> and <a class="reference internal" href="#resetContext" title="resetContext"><code class="xref js js-func docutils literal"><span class="pre">resetContext()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="setLanguage">
+<code class="descname">setLanguage</code><span class="sig-paren">(</span><em>language : string</em><span class="sig-paren">)</span><a class="headerlink" href="#setLanguage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores preferred language of a user. It is available only on browsers.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="selectLanguage">
+<code class="descname">selectLanguage</code><span class="sig-paren">(</span><em>languageList : string[]</em>, <em>callback : function(err:error</em>, <em>lang:string)</em><span class="sig-paren">)</span><a class="headerlink" href="#selectLanguage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns preferred language from langaugeList from browsers&#8217; and node.js&#8217;s environment.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">There is no feature selecting preferred language from user&#8217;s request
+for web applications on node.js now.</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="applyToHTML">
+<code class="descname">applyToHTML</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#applyToHTML" title="Permalink to this definition">¶</a></dt>
+<dd><p>Searches <code class="docutils literal"><span class="pre">data-i18n</span></code> attributes and replace text on current web page.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        «&#160;&#160;<a href="cli.html">Command Line Interface</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="unittest.html">Unittest</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Yoshiki Shibukawa.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5a2.
+    </div>
+  </body>
+</html>

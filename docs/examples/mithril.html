@@ -1,0 +1,376 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Mithril Example &#8212; i18n for virtual dom 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Unittest" href="../unittest.html" />
+    <link rel="prev" title="Examples" href="../examples.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
+          <span>i18n for virtual dom 0.1.0 documentation</span></a></h1>
+        <h2 class="heading"><span>Mithril Example</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        «&#160;&#160;<a href="../examples.html">Examples</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../unittest.html">Unittest</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="mithril-example">
+<h1>Mithril Example<a class="headerlink" href="#mithril-example" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://mithril.js.org/">Mithril</a> is a stable web single page application framework.</p>
+<div class="section" id="sample">
+<h2>Sample<a class="headerlink" href="#sample" title="Permalink to this headline">¶</a></h2>
+<script type="text/javascript" src="../_static/i18n4v.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mithril/0.2.5/mithril.js"></script>
+
+<div id="select"></div>
+<div id="calendar"></div>
+<script>
+var translations = {
+    en: {
+        values: {
+            "Language Select": "Language Select",
+            Sun: "Sun", Mon: "Mon", Tue: "Tue", Wed: "Wed", Thu: "Thu", Fri: "Fri", Sat: "Sat",
+            "Previous Month": "Previous Month",
+            "Next Month": "Next Month",
+            "%{month} %{year}": "%{month} %{year}",
+            1: "January", 2: "February", 3: "March", 4: "April",
+            5: "May", 6: "June", 7: "July", 8: "August",
+            9: "September", 10: "October", 11: "November", 12: "December"
+        }
+    },
+    ja: {
+        values: {
+            "Language Select": "言語選択",
+            Sun: "日曜", Mon: "月曜", Tue: "火曜", Wed: "水曜", Thu: "木曜", Fri: "金曜", Sat: "土曜",
+            "Previous Month": "前月",
+            "Next Month": "次月",
+            "%{month} %{year}": "%{year} %{month}",
+            1: "睦月", 2: "如月", 3: "弥生", 4: "卯月",
+            5: "皐月", 6: "水無月", 7: "文月", 8: "葉月",
+            9: "長月", 10: "神無月", 11: "霜月", 12: "師走"
+        }
+    }
+};
+
+// language selection component
+var LanguageSelect = {
+    controller: function () {
+        this.select = function (lang) {
+            i18n.translator.reset();
+            i18n.translator.add(translations[lang]);
+        };
+    },
+    view: function (ctrl) {
+        return m('div', [
+            m('h3', i18n('Language Select')),
+            m('button', {onclick: ctrl.select.bind(ctrl, 'en')}, 'English'),
+            m('button', {onclick: ctrl.select.bind(ctrl, 'ja')}, 'Japanese')
+        ]);
+    }
+};
+
+// Jump to current month component
+var JumpThisMonth = {
+    controller: function () {
+        const date = new Date();
+        m.route("/" + date.getFullYear() + "/" + (date.getMonth() + 1));
+    },
+}
+
+// Calender component
+var Calendar = {
+    controller: function () {
+        var self = this;
+        this.year = m.prop(Number(m.route.param('year')));
+        this.month = m.prop(Number(m.route.param('month')));
+        this.next = function () {
+            if (self.month() === 12) {
+                m.route('/' + (self.year() + 1) + '/1');
+            } else {
+                m.route('/' + self.year() + '/' + (self.month() + 1));
+            }
+        };
+        this.prev = function () {
+            if (self.month() === 1) {
+                m.route('/' + (self.year() - 1) + '/12');
+            } else {
+                m.route('/' + self.year() + '/' + (self.month() - 1));
+            }
+        };
+    },
+    view: function (ctrl) {
+        var rows = [
+            m('tr', [
+                m('th', i18n('Sun')),
+                m('th', i18n('Mon')),
+                m('th', i18n('Tue')),
+                m('th', i18n('Wed')),
+                m('th', i18n('Thu')),
+                m('th', i18n('Fri')),
+                m('th', i18n('Sat'))
+            ])
+        ];
+        var days = {1:31,2:null,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31}[ctrl.month()];
+        if (!days) {
+            if ((ctrl.year() % 4 === 0) && (ctrl.year() % 100 !== 0) || (ctrl.year() % 400 === 0)) {
+                days = 29;
+            } else {
+                days = 28;
+            }
+        }
+        var firstDay = new Date(ctrl.year(), ctrl.month()-1, 1).getDay();
+        var lastDay = new Date(ctrl.year(), ctrl.month()-1, days).getDay();
+        var week = [];
+        for (var i = 0; i < firstDay; i++) {
+            week.push(m('td', m.trust('&nbsp;')));
+        }
+        for (var d = 1; d <= days; d++) {
+            week.push(m('td', d));
+            if (week.length === 7) {
+                rows.push(m('tr', week));
+                week = [];
+            }
+        }
+        for (i = 0; i < (6-lastDay); i++) {
+            week.push(m('td', m.trust('&nbsp;')));
+        }
+        if (week.length !== 0) {
+            rows.push(m('tr', week));
+        }
+        return m('div', [
+            m('h3', i18n('%{month} %{year}', {
+                year: i18n(ctrl.year()),
+                month: i18n(String(ctrl.month()))
+            })),
+            m('div', [
+                m('button', {onclick: ctrl.prev}, i18n('Previous Month')),
+                m('button', {onclick: ctrl.next}, i18n('Next Month'))
+            ]),
+            m('table', rows)
+        ]);
+    }
+};
+
+function main() {
+    i18n.translator.add(translations.en);
+    m.mount(document.querySelector('#select'), LanguageSelect);
+    m.route(document.querySelector('#calendar'), '/', {
+        '/': JumpThisMonth,
+        '/:year/:month': Calendar
+    });
+}
+
+if (document.readyState !== 'loading') {
+    main();
+} else {
+    document.addEventListener('DOMContentLoaded', main);
+}
+</script></div>
+<div class="section" id="source">
+<h2>Source<a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h2>
+<div class="code html highlight-default"><div class="highlight"><pre><span></span>&lt;script type=&quot;text/javascript&quot; src=&quot;../_static/i18n4v.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/mithril/0.2.5/mithril.js&quot;&gt;&lt;/script&gt;
+
+&lt;div id=&quot;select&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;calendar&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+var translations = {
+    en: {
+        values: {
+            &quot;Language Select&quot;: &quot;Language Select&quot;,
+            Sun: &quot;Sun&quot;, Mon: &quot;Mon&quot;, Tue: &quot;Tue&quot;, Wed: &quot;Wed&quot;, Thu: &quot;Thu&quot;, Fri: &quot;Fri&quot;, Sat: &quot;Sat&quot;,
+            &quot;Previous Month&quot;: &quot;Previous Month&quot;,
+            &quot;Next Month&quot;: &quot;Next Month&quot;,
+            &quot;%{month} %{year}&quot;: &quot;%{month} %{year}&quot;,
+            1: &quot;January&quot;, 2: &quot;February&quot;, 3: &quot;March&quot;, 4: &quot;April&quot;,
+            5: &quot;May&quot;, 6: &quot;June&quot;, 7: &quot;July&quot;, 8: &quot;August&quot;,
+            9: &quot;September&quot;, 10: &quot;October&quot;, 11: &quot;November&quot;, 12: &quot;December&quot;
+        }
+    },
+    ja: {
+        values: {
+            &quot;Language Select&quot;: &quot;言語選択&quot;,
+            Sun: &quot;日曜&quot;, Mon: &quot;月曜&quot;, Tue: &quot;火曜&quot;, Wed: &quot;水曜&quot;, Thu: &quot;木曜&quot;, Fri: &quot;金曜&quot;, Sat: &quot;土曜&quot;,
+            &quot;Previous Month&quot;: &quot;前月&quot;,
+            &quot;Next Month&quot;: &quot;次月&quot;,
+            &quot;%{month} %{year}&quot;: &quot;%{year} %{month}&quot;,
+            1: &quot;睦月&quot;, 2: &quot;如月&quot;, 3: &quot;弥生&quot;, 4: &quot;卯月&quot;,
+            5: &quot;皐月&quot;, 6: &quot;水無月&quot;, 7: &quot;文月&quot;, 8: &quot;葉月&quot;,
+            9: &quot;長月&quot;, 10: &quot;神無月&quot;, 11: &quot;霜月&quot;, 12: &quot;師走&quot;
+        }
+    }
+};
+
+// language selection component
+var LanguageSelect = {
+    controller: function () {
+        this.select = function (lang) {
+            i18n.translator.reset();
+            i18n.translator.add(translations[lang]);
+        };
+    },
+    view: function (ctrl) {
+        return m(&#39;div&#39;, [
+            m(&#39;h3&#39;, i18n(&#39;Language Select&#39;)),
+            m(&#39;button&#39;, {onclick: ctrl.select.bind(ctrl, &#39;en&#39;)}, &#39;English&#39;),
+            m(&#39;button&#39;, {onclick: ctrl.select.bind(ctrl, &#39;ja&#39;)}, &#39;Japanese&#39;)
+        ]);
+    }
+};
+
+// Jump to current month component
+var JumpThisMonth = {
+    controller: function () {
+        const date = new Date();
+        m.route(&quot;/&quot; + date.getFullYear() + &quot;/&quot; + (date.getMonth() + 1));
+    },
+}
+
+// Calender component
+var Calendar = {
+    controller: function () {
+        var self = this;
+        this.year = m.prop(Number(m.route.param(&#39;year&#39;)));
+        this.month = m.prop(Number(m.route.param(&#39;month&#39;)));
+        this.next = function () {
+            if (self.month() === 12) {
+                m.route(&#39;/&#39; + (self.year() + 1) + &#39;/1&#39;);
+            } else {
+                m.route(&#39;/&#39; + self.year() + &#39;/&#39; + (self.month() + 1));
+            }
+        };
+        this.prev = function () {
+            if (self.month() === 1) {
+                m.route(&#39;/&#39; + (self.year() - 1) + &#39;/12&#39;);
+            } else {
+                m.route(&#39;/&#39; + self.year() + &#39;/&#39; + (self.month() - 1));
+            }
+        };
+    },
+    view: function (ctrl) {
+        var rows = [
+            m(&#39;tr&#39;, [
+                m(&#39;th&#39;, i18n(&#39;Sun&#39;)),
+                m(&#39;th&#39;, i18n(&#39;Mon&#39;)),
+                m(&#39;th&#39;, i18n(&#39;Tue&#39;)),
+                m(&#39;th&#39;, i18n(&#39;Wed&#39;)),
+                m(&#39;th&#39;, i18n(&#39;Thu&#39;)),
+                m(&#39;th&#39;, i18n(&#39;Fri&#39;)),
+                m(&#39;th&#39;, i18n(&#39;Sat&#39;))
+            ])
+        ];
+        var days = {1:31,2:null,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31}[ctrl.month()];
+        if (!days) {
+            if ((ctrl.year() % 4 === 0) &amp;&amp; (ctrl.year() % 100 !== 0) || (ctrl.year() % 400 === 0)) {
+                days = 29;
+            } else {
+                days = 28;
+            }
+        }
+        var firstDay = new Date(ctrl.year(), ctrl.month()-1, 1).getDay();
+        var lastDay = new Date(ctrl.year(), ctrl.month()-1, days).getDay();
+        var week = [];
+        for (var i = 0; i &lt; firstDay; i++) {
+            week.push(m(&#39;td&#39;, m.trust(&#39;&amp;nbsp;&#39;)));
+        }
+        for (var d = 1; d &lt;= days; d++) {
+            week.push(m(&#39;td&#39;, d));
+            if (week.length === 7) {
+                rows.push(m(&#39;tr&#39;, week));
+                week = [];
+            }
+        }
+        for (i = 0; i &lt; (6-lastDay); i++) {
+            week.push(m(&#39;td&#39;, m.trust(&#39;&amp;nbsp;&#39;)));
+        }
+        if (week.length !== 0) {
+            rows.push(m(&#39;tr&#39;, week));
+        }
+        return m(&#39;div&#39;, [
+            m(&#39;h3&#39;, i18n(&#39;%{month} %{year}&#39;, {
+                year: i18n(ctrl.year()),
+                month: i18n(String(ctrl.month()))
+            })),
+            m(&#39;div&#39;, [
+                m(&#39;button&#39;, {onclick: ctrl.prev}, i18n(&#39;Previous Month&#39;)),
+                m(&#39;button&#39;, {onclick: ctrl.next}, i18n(&#39;Next Month&#39;))
+            ]),
+            m(&#39;table&#39;, rows)
+        ]);
+    }
+};
+
+function main() {
+    i18n.translator.add(translations.en);
+    m.mount(document.querySelector(&#39;#select&#39;), LanguageSelect);
+    m.route(document.querySelector(&#39;#calendar&#39;), &#39;/&#39;, {
+        &#39;/&#39;: JumpThisMonth,
+        &#39;/:year/:month&#39;: Calendar
+    });
+}
+
+if (document.readyState !== &#39;loading&#39;) {
+    main();
+} else {
+    document.addEventListener(&#39;DOMContentLoaded&#39;, main);
+}
+&lt;/script&gt;
+</pre></div>
+</div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        «&#160;&#160;<a href="../examples.html">Examples</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../unittest.html">Unittest</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Yoshiki Shibukawa.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5a2.
+    </div>
+  </body>
+</html>

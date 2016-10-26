@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Command Line Interface &#8212; i18n for virtual dom 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="api.html" />
+    <link rel="prev" title="Tutorial" href="tutorial.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="index.html">
+          <span>i18n for virtual dom 0.1.0 documentation</span></a></h1>
+        <h2 class="heading"><span>Command Line Interface</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        «&#160;&#160;<a href="tutorial.html">Tutorial</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="api.html">API Reference</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="command-line-interface">
+<h1>Command Line Interface<a class="headerlink" href="#command-line-interface" title="Permalink to this headline">¶</a></h1>
+<p><code class="docutils literal"><span class="pre">i18n4v</span></code> npm package provides <code class="docutils literal"><span class="pre">i18n4v</span></code> command to support internatinalization. It extracts translatable strings from given input files like an <code class="docutils literal"><span class="pre">xgettext</span></code> command of <code class="docutils literal"><span class="pre">gettext</span></code>.</p>
+<div class="code text highlight-default"><div class="highlight"><pre><span></span>i18n for virtual DOM (i18n4v)
+
+  Usage: i18n4v -o output.json [other options] &lt;source files/dirs...&gt;
+
+  Options:
+
+    -h, --help                    output usage information
+    -V, --version                 output the version number
+    -o, --output [path]           Output file path. You can add extension .js/.json.
+    -i, --js-include [pattern]    Input JavaScript file pattern. Default is &quot;((\.js)|(\.ts)|(.jsx))$&quot;
+    -e, --js-exclude [pattern]    Input JavaScript file filtering pattern.
+    -h, --html-include [pattern]  Input HTML file pattern. Default is /((\.html)|(\.xhtml))$
+    -x, --html-exclude [pattern]  Input HTML file filtering pattern.
+    -f, --fill-copy               Fill key as default translation text
+    --i18n [name]                 Specify i18n library file name
+</pre></div>
+</div>
+<p>If output file exists already, it reads the content and add new words to it. It keeps existing content.</p>
+<p>Basically this tool is used in shell script or batch file like this:</p>
+<div class="code sh highlight-default"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+
+<span class="o">./</span><span class="n">node_modules</span><span class="o">/.</span><span class="n">bin</span><span class="o">/</span><span class="n">i18n4v</span> <span class="o">-</span><span class="n">o</span> <span class="n">languges</span><span class="o">/</span><span class="n">en</span><span class="o">.</span><span class="n">json</span> <span class="o">-</span><span class="n">f</span> <span class="nb">bin</span> <span class="n">src</span>
+<span class="o">./</span><span class="n">node_modules</span><span class="o">/.</span><span class="n">bin</span><span class="o">/</span><span class="n">i18n4v</span> <span class="o">-</span><span class="n">o</span> <span class="n">languges</span><span class="o">/</span><span class="n">ja</span><span class="o">.</span><span class="n">json</span> <span class="nb">bin</span> <span class="n">src</span>
+</pre></div>
+</div>
+<p>It searches the following strings as a key:</p>
+<ul>
+<li><p class="first">HTML tags that has <code class="docutils literal"><span class="pre">data-i18n</span></code> data attribute:</p>
+<div class="code html highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">div</span> <span class="n">data</span><span class="o">-</span><span class="n">i18n</span><span class="o">&gt;</span><span class="n">This</span> <span class="n">item</span> <span class="ow">is</span> <span class="n">extracted</span><span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">div</span> <span class="n">data</span><span class="o">-</span><span class="n">i18n</span><span class="o">=</span><span class="s2">&quot;key&quot;</span><span class="o">&gt;</span><span class="n">This</span> <span class="n">item</span> <span class="ow">is</span> <span class="n">extracted</span> <span class="n">too</span><span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">It searching JavaScript code in two steps:</p>
+<ol class="arabic">
+<li><p class="first">Find <code class="docutils literal"><span class="pre">require()</span></code> statement with <code class="docutils literal"><span class="pre">'i18n4v'</span></code>:</p>
+<div class="code js highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">you</span> <span class="n">can</span> <span class="n">use</span> <span class="s1">&#39;var&#39;</span><span class="p">,</span> <span class="s1">&#39;let&#39;</span> <span class="n">instead</span> <span class="n">of</span> <span class="s1">&#39;const&#39;</span> <span class="n">too</span>
+<span class="n">const</span> <span class="n">i18n</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;i18n4v&#39;</span><span class="p">);</span>
+
+<span class="o">//</span> <span class="n">you</span> <span class="n">can</span> <span class="n">use</span> <span class="nb">any</span> <span class="n">name</span> <span class="n">you</span> <span class="n">want</span>
+<span class="n">const</span> <span class="n">_</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;i18n4v&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>You can overwrite module name by using <code class="docutils literal"><span class="pre">--i18n</span></code> option.</p>
+</li>
+<li><p class="first">Find function call that uses the identifier in step.1.</p>
+<div class="code js highlight-default"><div class="highlight"><pre><span></span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">i18n</span><span class="p">(</span><span class="s1">&#39;This string is extracted&#39;</span><span class="p">));</span>
+<span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Pluralisation, formatting, contextual strings are extracted too&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">));</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+</ul>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        «&#160;&#160;<a href="tutorial.html">Tutorial</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="api.html">API Reference</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Yoshiki Shibukawa.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5a2.
+    </div>
+  </body>
+</html>
