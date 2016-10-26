@@ -177,7 +177,6 @@ function parseHTML(words, source, filename, fillCopy=false) {
                     html = html.replace('data-i18n=""', 'data-i18n');
                 }
                 words.warnings.push(`HTML tag '${html}' does not have single text as a child. Add key as a data-i18n attribute or add data-i18n-safe attribute in ${filename}`);
-                console.log("@@@@", key);
                 continue;
             }
         }
