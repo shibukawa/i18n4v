@@ -1,7 +1,7 @@
 Mithril Example
 ===============
 
-`Mithril <http://mithril.js.org/>`_ is a stable web single page application framework.
+`Mithril <http://mithril.js.org/>`_ is tiny and stable web single page application framework.
 
 Sample
 ------

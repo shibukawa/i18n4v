@@ -186,7 +186,7 @@ describe('browser support', function () {
     var doc;
     before(function () {
         if (typeof document === 'undefined') {
-            var jsdom = require("jsdom").jsdom;
+            var jsdom = module.require("jsdom").jsdom;
             doc = jsdom([
                 "<HTML><head></head><body>",
                 "<span id=\"id1\" data-i18n>hello world</span>",

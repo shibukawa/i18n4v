@@ -97,6 +97,11 @@ License
 
 `MIT <https://shibu.mit-license.org/>`_
 
+Repository
+----------
+
+https://github.com/shibukawa/i18n4v
+
 Indices and tables
 ------------------
 
