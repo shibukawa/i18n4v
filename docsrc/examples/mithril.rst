@@ -1,7 +1,7 @@
 Mithril Example
 ===============
 
-`Mithril <http://mithril.js.org/>`_ is tiny and stable web single page application framework.
+`Mithril <http://mithril.js.org/>`_ is tiny and fast and stable web single page application framework. It provides complete feature and has no dependency.
 
 Sample
 ------
@@ -45,7 +45,6 @@ Sample
    var LanguageSelect = {
        controller: function () {
            this.select = function (lang) {
-               i18n.translator.reset();
                i18n.translator.add(translations[lang]);
            };
        },
@@ -57,21 +56,46 @@ Sample
            ]);
        }
    };
-   
+
+   // Generates calendar
+   function calendar(year, month) {
+       var i, d;
+       var firstDay = new Date(year, month-1, 1).getDay();
+       var last = new Date(year, month, 0);
+       var weeks = [];
+       var week = [];
+       for (i = 0; i < firstDay; i++) {
+           week.push('');
+       }
+       for (d = 1; d <= last.getDate(); d++) {
+           week.push(d);
+           if (week.length === 7) {
+               weeks.push(week);
+               week = [];
+           }
+       }
+       for (i = 0; i < (6 - last.getDay()); i++) {
+           week.push('');
+       }
+       weeks.push(week);
+       return weeks;
+   }
+
    // Jump to current month component
    var JumpThisMonth = {
        controller: function () {
-           const date = new Date();
+           var date = new Date();
            m.route("/" + date.getFullYear() + "/" + (date.getMonth() + 1));
        },
    }
-
+   
    // Calender component
    var Calendar = {
        controller: function () {
            var self = this;
            this.year = m.prop(Number(m.route.param('year')));
            this.month = m.prop(Number(m.route.param('month')));
+           this.calendar = m.prop(calendar(this.year(), this.month()));
            this.next = function () {
                if (self.month() === 12) {
                    m.route('/' + (self.year() + 1) + '/1');
@@ -88,44 +112,7 @@ Sample
            };
        },
        view: function (ctrl) {
-           var rows = [
-               m('tr', [
-                   m('th', i18n('Sun')),
-                   m('th', i18n('Mon')),
-                   m('th', i18n('Tue')),
-                   m('th', i18n('Wed')),
-                   m('th', i18n('Thu')),
-                   m('th', i18n('Fri')),
-                   m('th', i18n('Sat'))
-               ])
-           ];
-           var days = {1:31,2:null,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31}[ctrl.month()];
-           if (!days) {
-               if ((ctrl.year() % 4 === 0) && (ctrl.year() % 100 !== 0) || (ctrl.year() % 400 === 0)) {
-                   days = 29;
-               } else {
-                   days = 28;
-               }
-           }
-           var firstDay = new Date(ctrl.year(), ctrl.month()-1, 1).getDay();
-           var lastDay = new Date(ctrl.year(), ctrl.month()-1, days).getDay();
-           var week = [];
-           for (var i = 0; i < firstDay; i++) {
-               week.push(m('td', m.trust('&nbsp;')));
-           }
-           for (var d = 1; d <= days; d++) {
-               week.push(m('td', d));
-               if (week.length === 7) {
-                   rows.push(m('tr', week));
-                   week = [];
-               }
-           }
-           for (i = 0; i < (6-lastDay); i++) {
-               week.push(m('td', m.trust('&nbsp;')));
-           }
-           if (week.length !== 0) {
-               rows.push(m('tr', week));
-           }
+           var dayOfWeekLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
            return m('div', [
                m('h3', i18n('%{month} %{year}', {
                    year: i18n(ctrl.year()),
@@ -135,13 +122,26 @@ Sample
                    m('button', {onclick: ctrl.prev}, i18n('Previous Month')),
                    m('button', {onclick: ctrl.next}, i18n('Next Month'))
                ]),
-               m('table', rows)
+               m('table', [
+                   m('thead', [
+                       m('tr', dayOfWeekLabels.map(function(label) {
+                           return m('th', i18n(label));
+                       }))
+                   ]),
+                   m('tbody', ctrl.calendar().map(function(week) {
+                       return m('tr', week.map(function(day) {
+                           return m('td', (day !== '') ? day : m.trust('&nbsp'));
+                       }));
+                   }))
+               ])
            ]);
        }
    };
 
    function main() {
-       i18n.translator.add(translations.en);
+       i18n.translator.selectLanguage(Object.keys(translations), function (err, lang) {
+           i18n.translator.add(translations[lang] ? translations[lang] : translations.en);
+       });
        m.mount(document.querySelector('#select'), LanguageSelect);
        m.route(document.querySelector('#calendar'), '/', {
            '/': JumpThisMonth,
@@ -198,7 +198,6 @@ Source
    var LanguageSelect = {
        controller: function () {
            this.select = function (lang) {
-               i18n.translator.reset();
                i18n.translator.add(translations[lang]);
            };
        },
@@ -210,11 +209,35 @@ Source
            ]);
        }
    };
+
+   // Generates calendar
+   function calendar(year, month) {
+       var i, d;
+       var firstDay = new Date(year, month-1, 1).getDay();
+       var last = new Date(year, month, 0);
+       var weeks = [];
+       var week = [];
+       for (i = 0; i < firstDay; i++) {
+           week.push('');
+       }
+       for (d = 1; d <= last.getDate(); d++) {
+           week.push(d);
+           if (week.length === 7) {
+               weeks.push(week);
+               week = [];
+           }
+       }
+       for (i = 0; i < (6 - last.getDay()); i++) {
+           week.push('');
+       }
+       weeks.push(week);
+       return weeks;
+   }
    
    // Jump to current month component
    var JumpThisMonth = {
        controller: function () {
-           const date = new Date();
+           var date = new Date();
            m.route("/" + date.getFullYear() + "/" + (date.getMonth() + 1));
        },
    }
@@ -225,6 +248,7 @@ Source
            var self = this;
            this.year = m.prop(Number(m.route.param('year')));
            this.month = m.prop(Number(m.route.param('month')));
+           this.calendar = m.prop(calendar(this.year(), this.month()));
            this.next = function () {
                if (self.month() === 12) {
                    m.route('/' + (self.year() + 1) + '/1');
@@ -241,44 +265,7 @@ Source
            };
        },
        view: function (ctrl) {
-           var rows = [
-               m('tr', [
-                   m('th', i18n('Sun')),
-                   m('th', i18n('Mon')),
-                   m('th', i18n('Tue')),
-                   m('th', i18n('Wed')),
-                   m('th', i18n('Thu')),
-                   m('th', i18n('Fri')),
-                   m('th', i18n('Sat'))
-               ])
-           ];
-           var days = {1:31,2:null,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31}[ctrl.month()];
-           if (!days) {
-               if ((ctrl.year() % 4 === 0) && (ctrl.year() % 100 !== 0) || (ctrl.year() % 400 === 0)) {
-                   days = 29;
-               } else {
-                   days = 28;
-               }
-           }
-           var firstDay = new Date(ctrl.year(), ctrl.month()-1, 1).getDay();
-           var lastDay = new Date(ctrl.year(), ctrl.month()-1, days).getDay();
-           var week = [];
-           for (var i = 0; i < firstDay; i++) {
-               week.push(m('td', m.trust('&nbsp;')));
-           }
-           for (var d = 1; d <= days; d++) {
-               week.push(m('td', d));
-               if (week.length === 7) {
-                   rows.push(m('tr', week));
-                   week = [];
-               }
-           }
-           for (i = 0; i < (6-lastDay); i++) {
-               week.push(m('td', m.trust('&nbsp;')));
-           }
-           if (week.length !== 0) {
-               rows.push(m('tr', week));
-           }
+           var dayOfWeekLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
            return m('div', [
                m('h3', i18n('%{month} %{year}', {
                    year: i18n(ctrl.year()),
@@ -288,13 +275,26 @@ Source
                    m('button', {onclick: ctrl.prev}, i18n('Previous Month')),
                    m('button', {onclick: ctrl.next}, i18n('Next Month'))
                ]),
-               m('table', rows)
+               m('table', [
+                   m('thead', [
+                       m('tr', dayOfWeekLabels.map(function(label) {
+                           return m('th', i18n(label));
+                       }))
+                   ]),
+                   m('tbody', ctrl.calendar().map(function(week) {
+                       return m('tr', week.map(function(day) {
+                           return m('td', (day !== '') ? day : m.trust('&nbsp'));
+                       }));
+                   }))
+               ])
            ]);
        }
    };
 
    function main() {
-       i18n.translator.add(translations.en);
+       i18n.translator.selectLanguage(Object.keys(translations), function (err, lang) {
+           i18n.translator.add(translations[lang] ? translations[lang] : translations.en);
+       });
        m.mount(document.querySelector('#select'), LanguageSelect);
        m.route(document.querySelector('#calendar'), '/', {
            '/': JumpThisMonth,

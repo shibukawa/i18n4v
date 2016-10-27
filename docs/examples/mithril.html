@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Mithril Example &#8212; i18n for virtual dom 0.1.0 documentation</title>
+    <title>Mithril Example &#8212; i18n for virtual dom 0.1.2 documentation</title>
     
     <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.1.0',
+        VERSION:     '0.1.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -26,12 +26,12 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Unittest" href="../unittest.html" />
+    <link rel="next" title="Vue Example" href="vue.html" />
     <link rel="prev" title="Examples" href="../examples.html" /> 
   </head>
   <body role="document">
       <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
-          <span>i18n for virtual dom 0.1.0 documentation</span></a></h1>
+          <span>i18n for virtual dom 0.1.2 documentation</span></a></h1>
         <h2 class="heading"><span>Mithril Example</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
@@ -41,7 +41,7 @@
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="../unittest.html">Unittest</a>&#160;&#160;»
+        <a href="vue.html">Vue Example</a>&#160;&#160;»
         </p>
 
       </div>
@@ -50,7 +50,7 @@
         
   <div class="section" id="mithril-example">
 <h1>Mithril Example<a class="headerlink" href="#mithril-example" title="Permalink to this headline">¶</a></h1>
-<p><a class="reference external" href="http://mithril.js.org/">Mithril</a> is tiny and stable web single page application framework.</p>
+<p><a class="reference external" href="http://mithril.js.org/">Mithril</a> is tiny and fast and stable web single page application framework. It provides complete feature and has no dependency.</p>
 <div class="section" id="sample">
 <h2>Sample<a class="headerlink" href="#sample" title="Permalink to this headline">¶</a></h2>
 <script type="text/javascript" src="../_static/i18n4v.js"></script>
@@ -90,7 +90,6 @@ var translations = {
 var LanguageSelect = {
     controller: function () {
         this.select = function (lang) {
-            i18n.translator.reset();
             i18n.translator.add(translations[lang]);
         };
     },
@@ -103,10 +102,34 @@ var LanguageSelect = {
     }
 };
 
+// Generates calendar
+function calendar(year, month) {
+    var i, d;
+    var firstDay = new Date(year, month-1, 1).getDay();
+    var last = new Date(year, month, 0);
+    var weeks = [];
+    var week = [];
+    for (i = 0; i < firstDay; i++) {
+        week.push('');
+    }
+    for (d = 1; d <= last.getDate(); d++) {
+        week.push(d);
+        if (week.length === 7) {
+            weeks.push(week);
+            week = [];
+        }
+    }
+    for (i = 0; i < (6 - last.getDay()); i++) {
+        week.push('');
+    }
+    weeks.push(week);
+    return weeks;
+}
+
 // Jump to current month component
 var JumpThisMonth = {
     controller: function () {
-        const date = new Date();
+        var date = new Date();
         m.route("/" + date.getFullYear() + "/" + (date.getMonth() + 1));
     },
 }
@@ -117,6 +140,7 @@ var Calendar = {
         var self = this;
         this.year = m.prop(Number(m.route.param('year')));
         this.month = m.prop(Number(m.route.param('month')));
+        this.calendar = m.prop(calendar(this.year(), this.month()));
         this.next = function () {
             if (self.month() === 12) {
                 m.route('/' + (self.year() + 1) + '/1');
@@ -133,44 +157,7 @@ var Calendar = {
         };
     },
     view: function (ctrl) {
-        var rows = [
-            m('tr', [
-                m('th', i18n('Sun')),
-                m('th', i18n('Mon')),
-                m('th', i18n('Tue')),
-                m('th', i18n('Wed')),
-                m('th', i18n('Thu')),
-                m('th', i18n('Fri')),
-                m('th', i18n('Sat'))
-            ])
-        ];
-        var days = {1:31,2:null,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31}[ctrl.month()];
-        if (!days) {
-            if ((ctrl.year() % 4 === 0) && (ctrl.year() % 100 !== 0) || (ctrl.year() % 400 === 0)) {
-                days = 29;
-            } else {
-                days = 28;
-            }
-        }
-        var firstDay = new Date(ctrl.year(), ctrl.month()-1, 1).getDay();
-        var lastDay = new Date(ctrl.year(), ctrl.month()-1, days).getDay();
-        var week = [];
-        for (var i = 0; i < firstDay; i++) {
-            week.push(m('td', m.trust('&nbsp;')));
-        }
-        for (var d = 1; d <= days; d++) {
-            week.push(m('td', d));
-            if (week.length === 7) {
-                rows.push(m('tr', week));
-                week = [];
-            }
-        }
-        for (i = 0; i < (6-lastDay); i++) {
-            week.push(m('td', m.trust('&nbsp;')));
-        }
-        if (week.length !== 0) {
-            rows.push(m('tr', week));
-        }
+        var dayOfWeekLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         return m('div', [
             m('h3', i18n('%{month} %{year}', {
                 year: i18n(ctrl.year()),
@@ -180,13 +167,26 @@ var Calendar = {
                 m('button', {onclick: ctrl.prev}, i18n('Previous Month')),
                 m('button', {onclick: ctrl.next}, i18n('Next Month'))
             ]),
-            m('table', rows)
+            m('table', [
+                m('thead', [
+                    m('tr', dayOfWeekLabels.map(function(label) {
+                        return m('th', i18n(label));
+                    }))
+                ]),
+                m('tbody', ctrl.calendar().map(function(week) {
+                    return m('tr', week.map(function(day) {
+                        return m('td', (day !== '') ? day : m.trust('&nbsp'));
+                    }));
+                }))
+            ])
         ]);
     }
 };
 
 function main() {
-    i18n.translator.add(translations.en);
+    i18n.translator.selectLanguage(Object.keys(translations), function (err, lang) {
+        i18n.translator.add(translations[lang] ? translations[lang] : translations.en);
+    });
     m.mount(document.querySelector('#select'), LanguageSelect);
     m.route(document.querySelector('#calendar'), '/', {
         '/': JumpThisMonth,
@@ -239,7 +239,6 @@ var translations = {
 var LanguageSelect = {
     controller: function () {
         this.select = function (lang) {
-            i18n.translator.reset();
             i18n.translator.add(translations[lang]);
         };
     },
@@ -252,10 +251,34 @@ var LanguageSelect = {
     }
 };
 
+// Generates calendar
+function calendar(year, month) {
+    var i, d;
+    var firstDay = new Date(year, month-1, 1).getDay();
+    var last = new Date(year, month, 0);
+    var weeks = [];
+    var week = [];
+    for (i = 0; i &lt; firstDay; i++) {
+        week.push(&#39;&#39;);
+    }
+    for (d = 1; d &lt;= last.getDate(); d++) {
+        week.push(d);
+        if (week.length === 7) {
+            weeks.push(week);
+            week = [];
+        }
+    }
+    for (i = 0; i &lt; (6 - last.getDay()); i++) {
+        week.push(&#39;&#39;);
+    }
+    weeks.push(week);
+    return weeks;
+}
+
 // Jump to current month component
 var JumpThisMonth = {
     controller: function () {
-        const date = new Date();
+        var date = new Date();
         m.route(&quot;/&quot; + date.getFullYear() + &quot;/&quot; + (date.getMonth() + 1));
     },
 }
@@ -266,6 +289,7 @@ var Calendar = {
         var self = this;
         this.year = m.prop(Number(m.route.param(&#39;year&#39;)));
         this.month = m.prop(Number(m.route.param(&#39;month&#39;)));
+        this.calendar = m.prop(calendar(this.year(), this.month()));
         this.next = function () {
             if (self.month() === 12) {
                 m.route(&#39;/&#39; + (self.year() + 1) + &#39;/1&#39;);
@@ -282,44 +306,7 @@ var Calendar = {
         };
     },
     view: function (ctrl) {
-        var rows = [
-            m(&#39;tr&#39;, [
-                m(&#39;th&#39;, i18n(&#39;Sun&#39;)),
-                m(&#39;th&#39;, i18n(&#39;Mon&#39;)),
-                m(&#39;th&#39;, i18n(&#39;Tue&#39;)),
-                m(&#39;th&#39;, i18n(&#39;Wed&#39;)),
-                m(&#39;th&#39;, i18n(&#39;Thu&#39;)),
-                m(&#39;th&#39;, i18n(&#39;Fri&#39;)),
-                m(&#39;th&#39;, i18n(&#39;Sat&#39;))
-            ])
-        ];
-        var days = {1:31,2:null,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31}[ctrl.month()];
-        if (!days) {
-            if ((ctrl.year() % 4 === 0) &amp;&amp; (ctrl.year() % 100 !== 0) || (ctrl.year() % 400 === 0)) {
-                days = 29;
-            } else {
-                days = 28;
-            }
-        }
-        var firstDay = new Date(ctrl.year(), ctrl.month()-1, 1).getDay();
-        var lastDay = new Date(ctrl.year(), ctrl.month()-1, days).getDay();
-        var week = [];
-        for (var i = 0; i &lt; firstDay; i++) {
-            week.push(m(&#39;td&#39;, m.trust(&#39;&amp;nbsp;&#39;)));
-        }
-        for (var d = 1; d &lt;= days; d++) {
-            week.push(m(&#39;td&#39;, d));
-            if (week.length === 7) {
-                rows.push(m(&#39;tr&#39;, week));
-                week = [];
-            }
-        }
-        for (i = 0; i &lt; (6-lastDay); i++) {
-            week.push(m(&#39;td&#39;, m.trust(&#39;&amp;nbsp;&#39;)));
-        }
-        if (week.length !== 0) {
-            rows.push(m(&#39;tr&#39;, week));
-        }
+        var dayOfWeekLabels = [&#39;Sun&#39;, &#39;Mon&#39;, &#39;Tue&#39;, &#39;Wed&#39;, &#39;Thu&#39;, &#39;Fri&#39;, &#39;Sat&#39;];
         return m(&#39;div&#39;, [
             m(&#39;h3&#39;, i18n(&#39;%{month} %{year}&#39;, {
                 year: i18n(ctrl.year()),
@@ -329,13 +316,26 @@ var Calendar = {
                 m(&#39;button&#39;, {onclick: ctrl.prev}, i18n(&#39;Previous Month&#39;)),
                 m(&#39;button&#39;, {onclick: ctrl.next}, i18n(&#39;Next Month&#39;))
             ]),
-            m(&#39;table&#39;, rows)
+            m(&#39;table&#39;, [
+                m(&#39;thead&#39;, [
+                    m(&#39;tr&#39;, dayOfWeekLabels.map(function(label) {
+                        return m(&#39;th&#39;, i18n(label));
+                    }))
+                ]),
+                m(&#39;tbody&#39;, ctrl.calendar().map(function(week) {
+                    return m(&#39;tr&#39;, week.map(function(day) {
+                        return m(&#39;td&#39;, (day !== &#39;&#39;) ? day : m.trust(&#39;&amp;nbsp&#39;));
+                    }));
+                }))
+            ])
         ]);
     }
 };
 
 function main() {
-    i18n.translator.add(translations.en);
+    i18n.translator.selectLanguage(Object.keys(translations), function (err, lang) {
+        i18n.translator.add(translations[lang] ? translations[lang] : translations.en);
+    });
     m.mount(document.querySelector(&#39;#select&#39;), LanguageSelect);
     m.route(document.querySelector(&#39;#calendar&#39;), &#39;/&#39;, {
         &#39;/&#39;: JumpThisMonth,
@@ -363,7 +363,7 @@ if (document.readyState !== &#39;loading&#39;) {
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="../unittest.html">Unittest</a>&#160;&#160;»
+        <a href="vue.html">Vue Example</a>&#160;&#160;»
         </p>
 
       </div>

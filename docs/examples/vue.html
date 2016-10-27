@@ -1,0 +1,417 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Vue Example &#8212; i18n for virtual dom 0.1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Unittest" href="../unittest.html" />
+    <link rel="prev" title="Mithril Example" href="mithril.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
+          <span>i18n for virtual dom 0.1.2 documentation</span></a></h1>
+        <h2 class="heading"><span>Vue Example</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        «&#160;&#160;<a href="mithril.html">Mithril Example</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../unittest.html">Unittest</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="vue-example">
+<h1>Vue Example<a class="headerlink" href="#vue-example" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://http://vuejs.org/">Vue</a> is a progressive MVC framework. Core is small, but there many plug-ins to extend Vue.</p>
+<script type="text/javascript" src="../_static/i18n4v.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/2.0.1/vue-router.js"></script>
+
+<div id="app-calendar">
+    <router-view></router-view>
+</div>
+
+<script>
+var router, vm;
+var translations = {
+    en: {
+        values: {
+            "Language Select": "Language Select",
+            Sun: "Sun", Mon: "Mon", Tue: "Tue", Wed: "Wed", Thu: "Thu", Fri: "Fri", Sat: "Sat",
+            "Previous Month": "Previous Month",
+            "Next Month": "Next Month",
+            "%{month} %{year}": "%{month} %{year}",
+            1: "January", 2: "February", 3: "March", 4: "April",
+            5: "May", 6: "June", 7: "July", 8: "August",
+            9: "September", 10: "October", 11: "November", 12: "December"
+        }
+    },
+    ja: {
+        values: {
+            "Language Select": "言語選択",
+            Sun: "日曜", Mon: "月曜", Tue: "火曜", Wed: "水曜", Thu: "木曜", Fri: "金曜", Sat: "土曜",
+            "Previous Month": "前月",
+            "Next Month": "次月",
+            "%{month} %{year}": "%{year} %{month}",
+            1: "睦月", 2: "如月", 3: "弥生", 4: "卯月",
+            5: "皐月", 6: "水無月", 7: "文月", 8: "葉月",
+            9: "長月", 10: "神無月", 11: "霜月", 12: "師走"
+        }
+    }
+};
+
+// Generates calendar
+function calcCalendar(year, month) {
+    var i, d;
+    var firstDay = new Date(year, month-1, 1).getDay();
+    var last = new Date(year, month, 0);
+    var weeks = [];
+    var week = [];
+    for (i = 0; i < firstDay; i++) {
+        week.push('');
+    }
+    for (d = 1; d <= last.getDate(); d++) {
+        week.push(d);
+        if (week.length === 7) {
+            weeks.push(week);
+            week = [];
+        }
+    }
+    for (i = 0; i < (6 - last.getDay()); i++) {
+        week.push('');
+    }
+    weeks.push(week);
+    return weeks;
+}
+
+Vue.component('calendar', {
+    props: {
+        year: Number,
+        month: Number
+    },
+    template: [
+        '<table>',
+            '<thead>',
+                '<tr>',
+                    '<th v-for="label in dayOfWeekLabels">{{ i18n(label) }}</th>',
+                '</tr>',
+            '</thead>',
+            '<tbody>',
+                '<tr v-for="week in calendar">',
+                    '<td v-for="day in week">{{day}}</td>',
+                '</tr>',
+            '</tbody>',
+        '</table>'].join(''),
+    computed: {
+        calendar: function() {
+            return calcCalendar(this.year, this.month);
+        }
+    },
+    data: function () {
+        return {
+            dayOfWeekLabels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+        };
+    },
+    methods: {
+        i18n: i18n
+    }
+});
+
+var Calendar = {
+    data: function () {
+        return {
+            year: null,
+            month: null,
+        };
+    },
+    template: [
+        '<div>',
+            '<h3>{{ i18n("Language Select") }}</h3>',
+            '<button v-on:click="select(\'en\')">English</button>',
+            '<button v-on:click="select(\'ja\')">Japanese</button>',
+            '<h3>{{ i18n("%{month} %{year}", {year: year, month: i18n(month) }) }}</h3>',
+            '<button v-on:click="prev">{{ i18n("Previous Month") }}</button>',
+            '<button v-on:click="next">{{ i18n("Next Month") }}</button>',
+            '<calendar v-bind:year="year" v-bind:month="month"></calendar>',
+        '</div>'
+    ].join(''),
+    created: function () {
+        this.year = Number(this.$route.params.year);
+        this.month = Number(this.$route.params.month);
+    },
+    methods: {
+        prev: function () {
+            if (this.month === 1) {
+                router.push('/' + (this.year - 1) + '/12');
+            } else {
+                router.push('/' + this.year + '/' + (this.month - 1));
+            }
+        },
+        next: function () {
+            if (this.month === 12) {
+                router.push('/' + (this.year + 1) + '/1');
+            } else {
+                router.push('/' + this.year + '/' + (this.month + 1));
+            }
+        },
+        select: function (lang) {
+            i18n.translator.add(translations[lang]);
+        },
+        i18n: i18n
+    },
+    watch: {
+        $route: function () {
+            this.year = Number(this.$route.params.year);
+            this.month = Number(this.$route.params.month);
+        }
+    }
+};
+var date = new Date();
+var thisMonth = '/' + date.getFullYear() + '/' + (date.getMonth() + 1);
+router = new VueRouter({
+    routes: [
+        { path: '/:year/:month', component: Calendar },
+        { path: '/', redirect: thisMonth }
+    ]
+});
+
+function main() {
+    i18n.translator.selectLanguage(Object.keys(translations), function (err, lang) {
+        i18n.translator.add(translations[lang] ? translations[lang] : translations.en);
+    });
+
+    vm = new Vue({
+        router: router
+    });
+    vm.$mount('#app-calendar');
+}
+
+if (document.readyState !== 'loading') {
+    main();
+} else {
+    document.addEventListener('DOMContentLoaded', main);
+}
+</script><div class="section" id="source">
+<h2>Source<a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h2>
+<div class="code html highlight-default"><div class="highlight"><pre><span></span>&lt;script type=&quot;text/javascript&quot; src=&quot;../_static/i18n4v.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/vue-router/2.0.1/vue-router.js&quot;&gt;&lt;/script&gt;
+
+&lt;div id=&quot;app-calendar&quot;&gt;
+    &lt;router-view&gt;&lt;/router-view&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+var router, vm;
+var translations = {
+    en: {
+        values: {
+            &quot;Language Select&quot;: &quot;Language Select&quot;,
+            Sun: &quot;Sun&quot;, Mon: &quot;Mon&quot;, Tue: &quot;Tue&quot;, Wed: &quot;Wed&quot;, Thu: &quot;Thu&quot;, Fri: &quot;Fri&quot;, Sat: &quot;Sat&quot;,
+            &quot;Previous Month&quot;: &quot;Previous Month&quot;,
+            &quot;Next Month&quot;: &quot;Next Month&quot;,
+            &quot;%{month} %{year}&quot;: &quot;%{month} %{year}&quot;,
+            1: &quot;January&quot;, 2: &quot;February&quot;, 3: &quot;March&quot;, 4: &quot;April&quot;,
+            5: &quot;May&quot;, 6: &quot;June&quot;, 7: &quot;July&quot;, 8: &quot;August&quot;,
+            9: &quot;September&quot;, 10: &quot;October&quot;, 11: &quot;November&quot;, 12: &quot;December&quot;
+        }
+    },
+    ja: {
+        values: {
+            &quot;Language Select&quot;: &quot;言語選択&quot;,
+            Sun: &quot;日曜&quot;, Mon: &quot;月曜&quot;, Tue: &quot;火曜&quot;, Wed: &quot;水曜&quot;, Thu: &quot;木曜&quot;, Fri: &quot;金曜&quot;, Sat: &quot;土曜&quot;,
+            &quot;Previous Month&quot;: &quot;前月&quot;,
+            &quot;Next Month&quot;: &quot;次月&quot;,
+            &quot;%{month} %{year}&quot;: &quot;%{year} %{month}&quot;,
+            1: &quot;睦月&quot;, 2: &quot;如月&quot;, 3: &quot;弥生&quot;, 4: &quot;卯月&quot;,
+            5: &quot;皐月&quot;, 6: &quot;水無月&quot;, 7: &quot;文月&quot;, 8: &quot;葉月&quot;,
+            9: &quot;長月&quot;, 10: &quot;神無月&quot;, 11: &quot;霜月&quot;, 12: &quot;師走&quot;
+        }
+    }
+};
+
+// Generates calendar
+function calcCalendar(year, month) {
+    var i, d;
+    var firstDay = new Date(year, month-1, 1).getDay();
+    var last = new Date(year, month, 0);
+    var weeks = [];
+    var week = [];
+    for (i = 0; i &lt; firstDay; i++) {
+        week.push(&#39;&#39;);
+    }
+    for (d = 1; d &lt;= last.getDate(); d++) {
+        week.push(d);
+        if (week.length === 7) {
+            weeks.push(week);
+            week = [];
+        }
+    }
+    for (i = 0; i &lt; (6 - last.getDay()); i++) {
+        week.push(&#39;&#39;);
+    }
+    weeks.push(week);
+    return weeks;
+}
+
+Vue.component(&#39;calendar&#39;, {
+    props: {
+        year: Number,
+        month: Number
+    },
+    template: [
+        &#39;&lt;table&gt;&#39;,
+            &#39;&lt;thead&gt;&#39;,
+                &#39;&lt;tr&gt;&#39;,
+                    &#39;&lt;th v-for=&quot;label in dayOfWeekLabels&quot;&gt;{{ i18n(label) }}&lt;/th&gt;&#39;,
+                &#39;&lt;/tr&gt;&#39;,
+            &#39;&lt;/thead&gt;&#39;,
+            &#39;&lt;tbody&gt;&#39;,
+                &#39;&lt;tr v-for=&quot;week in calendar&quot;&gt;&#39;,
+                    &#39;&lt;td v-for=&quot;day in week&quot;&gt;{{day}}&lt;/td&gt;&#39;,
+                &#39;&lt;/tr&gt;&#39;,
+            &#39;&lt;/tbody&gt;&#39;,
+        &#39;&lt;/table&gt;&#39;].join(&#39;&#39;),
+    computed: {
+        calendar: function() {
+            return calcCalendar(this.year, this.month);
+        }
+    },
+    data: function () {
+        return {
+            dayOfWeekLabels: [&#39;Sun&#39;, &#39;Mon&#39;, &#39;Tue&#39;, &#39;Wed&#39;, &#39;Thu&#39;, &#39;Fri&#39;, &#39;Sat&#39;]
+        };
+    },
+    methods: {
+        i18n: i18n
+    }
+});
+
+var Calendar = {
+    data: function () {
+        return {
+            year: null,
+            month: null,
+        };
+    },
+    template: [
+        &#39;&lt;div&gt;&#39;,
+            &#39;&lt;h3&gt;{{ i18n(&quot;Language Select&quot;) }}&lt;/h3&gt;&#39;,
+            &#39;&lt;button v-on:click=&quot;select(\&#39;en\&#39;)&quot;&gt;English&lt;/button&gt;&#39;,
+            &#39;&lt;button v-on:click=&quot;select(\&#39;ja\&#39;)&quot;&gt;Japanese&lt;/button&gt;&#39;,
+            &#39;&lt;h3&gt;{{ i18n(&quot;%{month} %{year}&quot;, {year: year, month: i18n(month) }) }}&lt;/h3&gt;&#39;,
+            &#39;&lt;button v-on:click=&quot;prev&quot;&gt;{{ i18n(&quot;Previous Month&quot;) }}&lt;/button&gt;&#39;,
+            &#39;&lt;button v-on:click=&quot;next&quot;&gt;{{ i18n(&quot;Next Month&quot;) }}&lt;/button&gt;&#39;,
+            &#39;&lt;calendar v-bind:year=&quot;year&quot; v-bind:month=&quot;month&quot;&gt;&lt;/calendar&gt;&#39;,
+        &#39;&lt;/div&gt;&#39;
+    ].join(&#39;&#39;),
+    created: function () {
+        this.year = Number(this.$route.params.year);
+        this.month = Number(this.$route.params.month);
+    },
+    methods: {
+        prev: function () {
+            if (this.month === 1) {
+                router.push(&#39;/&#39; + (this.year - 1) + &#39;/12&#39;);
+            } else {
+                router.push(&#39;/&#39; + this.year + &#39;/&#39; + (this.month - 1));
+            }
+        },
+        next: function () {
+            if (this.month === 12) {
+                router.push(&#39;/&#39; + (this.year + 1) + &#39;/1&#39;);
+            } else {
+                router.push(&#39;/&#39; + this.year + &#39;/&#39; + (this.month + 1));
+            }
+        },
+        select: function (lang) {
+            i18n.translator.add(translations[lang]);
+        },
+        i18n: i18n
+    },
+    watch: {
+        $route: function () {
+            this.year = Number(this.$route.params.year);
+            this.month = Number(this.$route.params.month);
+        }
+    }
+};
+var date = new Date();
+var thisMonth = &#39;/&#39; + date.getFullYear() + &#39;/&#39; + (date.getMonth() + 1);
+router = new VueRouter({
+    routes: [
+        { path: &#39;/:year/:month&#39;, component: Calendar },
+        { path: &#39;/&#39;, redirect: thisMonth }
+    ]
+});
+
+function main() {
+    i18n.translator.selectLanguage(Object.keys(translations), function (err, lang) {
+        i18n.translator.add(translations[lang] ? translations[lang] : translations.en);
+    });
+
+    vm = new Vue({
+        router: router
+    });
+    vm.$mount(&#39;#app-calendar&#39;);
+}
+
+if (document.readyState !== &#39;loading&#39;) {
+    main();
+} else {
+    document.addEventListener(&#39;DOMContentLoaded&#39;, main);
+}
+&lt;/script&gt;
+</pre></div>
+</div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        «&#160;&#160;<a href="mithril.html">Mithril Example</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../unittest.html">Unittest</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Yoshiki Shibukawa.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5a2.
+    </div>
+  </body>
+</html>

@@ -2,3 +2,4 @@
 Thumbds.db
 docsrc/_build
 node_modules
+*.swp
