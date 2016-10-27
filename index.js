@@ -1,8 +1,8 @@
 /* eslint-env node, amd */
 (function (name, context, definition) {
-      if (typeof module != 'undefined' && module.exports)
+      if (typeof module !== 'undefined' && module.exports)
             module.exports = definition();
-      else if (typeof define == 'function' && define.amd)
+      else if (typeof define === 'function' && define.amd)
             define(name, definition);
       else
             context[name] = definition();
@@ -15,7 +15,7 @@ var beforeIE8  = (function() {
         return false;
     }
     var nav = navigator.userAgent.toLowerCase();
-    return (nav.indexOf('msie') != -1) ? parseInt(nav.split('msie')[1]) < 9 : false;
+    return (nav.indexOf('msie') !== -1) ? parseInt(nav.split('msie')[1]) < 9 : false;
 })();
 
 function Translator() {
@@ -276,7 +276,7 @@ Translator.prototype.selectLanguage = function (languages, callback, storage) {
             return callback(null, lang);
         }
     }
-    if (module.require) {
+    if (typeof module !== 'undefined' && module.require) {
         module.require('os-locale')(function (err, lang) {
             preferredLanguages.push(lang, lang.split('_')[0]);
             select();
