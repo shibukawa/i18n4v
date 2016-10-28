@@ -202,155 +202,301 @@ if (document.readyState !== 'loading') {
 </script></div>
 <div class="section" id="source">
 <h2>Source<a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h2>
-<div class="code html highlight-default"><div class="highlight"><pre><span></span>&lt;script type=&quot;text/javascript&quot; src=&quot;../_static/i18n4v.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/mithril/0.2.5/mithril.js&quot;&gt;&lt;/script&gt;
+<div class="highlight-html"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;../_static/i18n4v.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/mithril/0.2.5/mithril.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 
-&lt;div id=&quot;select&quot;&gt;&lt;/div&gt;
-&lt;div id=&quot;calendar&quot;&gt;&lt;/div&gt;
-&lt;script&gt;
-var translations = {
-    en: {
-        values: {
-            &quot;Language Select&quot;: &quot;Language Select&quot;,
-            Sun: &quot;Sun&quot;, Mon: &quot;Mon&quot;, Tue: &quot;Tue&quot;, Wed: &quot;Wed&quot;, Thu: &quot;Thu&quot;, Fri: &quot;Fri&quot;, Sat: &quot;Sat&quot;,
-            &quot;Previous Month&quot;: &quot;Previous Month&quot;,
-            &quot;Next Month&quot;: &quot;Next Month&quot;,
-            &quot;%{month} %{year}&quot;: &quot;%{month} %{year}&quot;,
-            1: &quot;January&quot;, 2: &quot;February&quot;, 3: &quot;March&quot;, 4: &quot;April&quot;,
-            5: &quot;May&quot;, 6: &quot;June&quot;, 7: &quot;July&quot;, 8: &quot;August&quot;,
-            9: &quot;September&quot;, 10: &quot;October&quot;, 11: &quot;November&quot;, 12: &quot;December&quot;
-        }
-    },
-    ja: {
-        values: {
-            &quot;Language Select&quot;: &quot;言語選択&quot;,
-            Sun: &quot;日曜&quot;, Mon: &quot;月曜&quot;, Tue: &quot;火曜&quot;, Wed: &quot;水曜&quot;, Thu: &quot;木曜&quot;, Fri: &quot;金曜&quot;, Sat: &quot;土曜&quot;,
-            &quot;Previous Month&quot;: &quot;前月&quot;,
-            &quot;Next Month&quot;: &quot;次月&quot;,
-            &quot;%{month} %{year}&quot;: &quot;%{year} %{month}&quot;,
-            1: &quot;睦月&quot;, 2: &quot;如月&quot;, 3: &quot;弥生&quot;, 4: &quot;卯月&quot;,
-            5: &quot;皐月&quot;, 6: &quot;水無月&quot;, 7: &quot;文月&quot;, 8: &quot;葉月&quot;,
-            9: &quot;長月&quot;, 10: &quot;神無月&quot;, 11: &quot;霜月&quot;, 12: &quot;師走&quot;
-        }
-    }
-};
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;select&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;calendar&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="kd">var</span> <span class="nx">translations</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">en</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">values</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s2">&quot;Language Select&quot;</span><span class="o">:</span> <span class="s2">&quot;Language Select&quot;</span><span class="p">,</span>
+            <span class="nx">Sun</span><span class="o">:</span> <span class="s2">&quot;Sun&quot;</span><span class="p">,</span> <span class="nx">Mon</span><span class="o">:</span> <span class="s2">&quot;Mon&quot;</span><span class="p">,</span> <span class="nx">Tue</span><span class="o">:</span> <span class="s2">&quot;Tue&quot;</span><span class="p">,</span> <span class="nx">Wed</span><span class="o">:</span> <span class="s2">&quot;Wed&quot;</span><span class="p">,</span> <span class="nx">Thu</span><span class="o">:</span> <span class="s2">&quot;Thu&quot;</span><span class="p">,</span> <span class="nx">Fri</span><span class="o">:</span> <span class="s2">&quot;Fri&quot;</span><span class="p">,</span> <span class="nx">Sat</span><span class="o">:</span> <span class="s2">&quot;Sat&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Previous Month&quot;</span><span class="o">:</span> <span class="s2">&quot;Previous Month&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Next Month&quot;</span><span class="o">:</span> <span class="s2">&quot;Next Month&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;%{month} %{year}&quot;</span><span class="o">:</span> <span class="s2">&quot;%{month} %{year}&quot;</span><span class="p">,</span>
+            <span class="mi">1</span><span class="o">:</span> <span class="s2">&quot;January&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="o">:</span> <span class="s2">&quot;February&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="o">:</span> <span class="s2">&quot;March&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="o">:</span> <span class="s2">&quot;April&quot;</span><span class="p">,</span>
+            <span class="mi">5</span><span class="o">:</span> <span class="s2">&quot;May&quot;</span><span class="p">,</span> <span class="mi">6</span><span class="o">:</span> <span class="s2">&quot;June&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="o">:</span> <span class="s2">&quot;July&quot;</span><span class="p">,</span> <span class="mi">8</span><span class="o">:</span> <span class="s2">&quot;August&quot;</span><span class="p">,</span>
+            <span class="mi">9</span><span class="o">:</span> <span class="s2">&quot;September&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="o">:</span> <span class="s2">&quot;October&quot;</span><span class="p">,</span> <span class="mi">11</span><span class="o">:</span> <span class="s2">&quot;November&quot;</span><span class="p">,</span> <span class="mi">12</span><span class="o">:</span> <span class="s2">&quot;December&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nx">ja</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">values</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s2">&quot;Language Select&quot;</span><span class="o">:</span> <span class="s2">&quot;言語選択&quot;</span><span class="p">,</span>
+            <span class="nx">Sun</span><span class="o">:</span> <span class="s2">&quot;日曜&quot;</span><span class="p">,</span> <span class="nx">Mon</span><span class="o">:</span> <span class="s2">&quot;月曜&quot;</span><span class="p">,</span> <span class="nx">Tue</span><span class="o">:</span> <span class="s2">&quot;火曜&quot;</span><span class="p">,</span> <span class="nx">Wed</span><span class="o">:</span> <span class="s2">&quot;水曜&quot;</span><span class="p">,</span> <span class="nx">Thu</span><span class="o">:</span> <span class="s2">&quot;木曜&quot;</span><span class="p">,</span> <span class="nx">Fri</span><span class="o">:</span> <span class="s2">&quot;金曜&quot;</span><span class="p">,</span> <span class="nx">Sat</span><span class="o">:</span> <span class="s2">&quot;土曜&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Previous Month&quot;</span><span class="o">:</span> <span class="s2">&quot;前月&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Next Month&quot;</span><span class="o">:</span> <span class="s2">&quot;次月&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;%{month} %{year}&quot;</span><span class="o">:</span> <span class="s2">&quot;%{year} %{month}&quot;</span><span class="p">,</span>
+            <span class="mi">1</span><span class="o">:</span> <span class="s2">&quot;睦月&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="o">:</span> <span class="s2">&quot;如月&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="o">:</span> <span class="s2">&quot;弥生&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="o">:</span> <span class="s2">&quot;卯月&quot;</span><span class="p">,</span>
+            <span class="mi">5</span><span class="o">:</span> <span class="s2">&quot;皐月&quot;</span><span class="p">,</span> <span class="mi">6</span><span class="o">:</span> <span class="s2">&quot;水無月&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="o">:</span> <span class="s2">&quot;文月&quot;</span><span class="p">,</span> <span class="mi">8</span><span class="o">:</span> <span class="s2">&quot;葉月&quot;</span><span class="p">,</span>
+            <span class="mi">9</span><span class="o">:</span> <span class="s2">&quot;長月&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="o">:</span> <span class="s2">&quot;神無月&quot;</span><span class="p">,</span> <span class="mi">11</span><span class="o">:</span> <span class="s2">&quot;霜月&quot;</span><span class="p">,</span> <span class="mi">12</span><span class="o">:</span> <span class="s2">&quot;師走&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">};</span>
 
-// language selection component
-var LanguageSelect = {
-    controller: function () {
-        this.select = function (lang) {
-            i18n.translator.add(translations[lang]);
-        };
-    },
-    view: function (ctrl) {
-        return m(&#39;div&#39;, [
-            m(&#39;h3&#39;, i18n(&#39;Language Select&#39;)),
-            m(&#39;button&#39;, {onclick: ctrl.select.bind(ctrl, &#39;en&#39;)}, &#39;English&#39;),
-            m(&#39;button&#39;, {onclick: ctrl.select.bind(ctrl, &#39;ja&#39;)}, &#39;Japanese&#39;)
-        ]);
-    }
-};
+<span class="c1">// language selection component</span>
+<span class="kd">var</span> <span class="nx">LanguageSelect</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">controller</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">select</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">lang</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">i18n</span><span class="p">.</span><span class="nx">translator</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">translations</span><span class="p">[</span><span class="nx">lang</span><span class="p">]);</span>
+        <span class="p">};</span>
+    <span class="p">},</span>
+    <span class="nx">view</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ctrl</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">m</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="p">[</span>
+            <span class="nx">m</span><span class="p">(</span><span class="s1">&#39;h3&#39;</span><span class="p">,</span> <span class="nx">i18n</span><span class="p">(</span><span class="s1">&#39;Language Select&#39;</span><span class="p">)),</span>
+            <span class="nx">m</span><span class="p">(</span><span class="s1">&#39;button&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">onclick</span><span class="o">:</span> <span class="nx">ctrl</span><span class="p">.</span><span class="nx">select</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">ctrl</span><span class="p">,</span> <span class="s1">&#39;en&#39;</span><span class="p">)},</span> <span class="s1">&#39;English&#39;</span><span class="p">),</span>
+            <span class="nx">m</span><span class="p">(</span><span class="s1">&#39;button&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">onclick</span><span class="o">:</span> <span class="nx">ctrl</span><span class="p">.</span><span class="nx">select</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">ctrl</span><span class="p">,</span> <span class="s1">&#39;ja&#39;</span><span class="p">)},</span> <span class="s1">&#39;Japanese&#39;</span><span class="p">)</span>
+        <span class="p">]);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
 
-// Generates calendar
-function calendar(year, month) {
-    var i, d;
-    var firstDay = new Date(year, month-1, 1).getDay();
-    var last = new Date(year, month, 0);
-    var weeks = [];
-    var week = [];
-    for (i = 0; i &lt; firstDay; i++) {
-        week.push(&#39;&#39;);
-    }
-    for (d = 1; d &lt;= last.getDate(); d++) {
-        week.push(d);
-        if (week.length === 7) {
-            weeks.push(week);
-            week = [];
-        }
-    }
-    for (i = 0; i &lt; (6 - last.getDay()); i++) {
-        week.push(&#39;&#39;);
-    }
-    weeks.push(week);
-    return weeks;
-}
+<span class="c1">// Generates calendar</span>
+<span class="kd">function</span> <span class="nx">calendar</span><span class="p">(</span><span class="nx">year</span><span class="p">,</span> <span class="nx">month</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">d</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">firstDay</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="nx">year</span><span class="p">,</span> <span class="nx">month</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">).</span><span class="nx">getDay</span><span class="p">();</span>
+    <span class="kd">var</span> <span class="nx">last</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="nx">year</span><span class="p">,</span> <span class="nx">month</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">weeks</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="kd">var</span> <span class="nx">week</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">firstDay</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">week</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="p">(</span><span class="nx">d</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">d</span> <span class="o">&lt;=</span> <span class="nx">last</span><span class="p">.</span><span class="nx">getDate</span><span class="p">();</span> <span class="nx">d</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">week</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">d</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">week</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">7</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">weeks</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">week</span><span class="p">);</span>
+            <span class="nx">week</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">6</span> <span class="o">-</span> <span class="nx">last</span><span class="p">.</span><span class="nx">getDay</span><span class="p">());</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">week</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nx">weeks</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">week</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">weeks</span><span class="p">;</span>
+<span class="p">}</span>
 
-// Jump to current month component
-var JumpThisMonth = {
-    controller: function () {
-        var date = new Date();
-        m.route(&quot;/&quot; + date.getFullYear() + &quot;/&quot; + (date.getMonth() + 1));
-    },
-}
+<span class="c1">// Jump to current month component</span>
+<span class="kd">var</span> <span class="nx">JumpThisMonth</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">controller</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">date</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
+        <span class="nx">m</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">date</span><span class="p">.</span><span class="nx">getFullYear</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">date</span><span class="p">.</span><span class="nx">getMonth</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">));</span>
+    <span class="p">},</span>
+<span class="p">}</span>
 
-// Calender component
-var Calendar = {
-    controller: function () {
-        var self = this;
-        this.year = m.prop(Number(m.route.param(&#39;year&#39;)));
-        this.month = m.prop(Number(m.route.param(&#39;month&#39;)));
-        this.calendar = m.prop(calendar(this.year(), this.month()));
-        this.next = function () {
-            if (self.month() === 12) {
-                m.route(&#39;/&#39; + (self.year() + 1) + &#39;/1&#39;);
-            } else {
-                m.route(&#39;/&#39; + self.year() + &#39;/&#39; + (self.month() + 1));
-            }
-        };
-        this.prev = function () {
-            if (self.month() === 1) {
-                m.route(&#39;/&#39; + (self.year() - 1) + &#39;/12&#39;);
-            } else {
-                m.route(&#39;/&#39; + self.year() + &#39;/&#39; + (self.month() - 1));
-            }
-        };
-    },
-    view: function (ctrl) {
-        var dayOfWeekLabels = [&#39;Sun&#39;, &#39;Mon&#39;, &#39;Tue&#39;, &#39;Wed&#39;, &#39;Thu&#39;, &#39;Fri&#39;, &#39;Sat&#39;];
-        return m(&#39;div&#39;, [
-            m(&#39;h3&#39;, i18n(&#39;%{month} %{year}&#39;, {
-                year: i18n(ctrl.year()),
-                month: i18n(String(ctrl.month()))
-            })),
-            m(&#39;div&#39;, [
-                m(&#39;button&#39;, {onclick: ctrl.prev}, i18n(&#39;Previous Month&#39;)),
-                m(&#39;button&#39;, {onclick: ctrl.next}, i18n(&#39;Next Month&#39;))
-            ]),
-            m(&#39;table&#39;, [
-                m(&#39;thead&#39;, [
-                    m(&#39;tr&#39;, dayOfWeekLabels.map(function(label) {
-                        return m(&#39;th&#39;, i18n(label));
-                    }))
-                ]),
-                m(&#39;tbody&#39;, ctrl.calendar().map(function(week) {
-                    return m(&#39;tr&#39;, week.map(function(day) {
-                        return m(&#39;td&#39;, (day !== &#39;&#39;) ? day : m.trust(&#39;&amp;nbsp&#39;));
-                    }));
-                }))
-            ])
-        ]);
-    }
-};
+<span class="c1">// Calender component</span>
+<span class="kd">var</span> <span class="nx">Calendar</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">controller</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">year</span> <span class="o">=</span> <span class="nx">m</span><span class="p">.</span><span class="nx">prop</span><span class="p">(</span><span class="nb">Number</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">route</span><span class="p">.</span><span class="nx">param</span><span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="p">)));</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">month</span> <span class="o">=</span> <span class="nx">m</span><span class="p">.</span><span class="nx">prop</span><span class="p">(</span><span class="nb">Number</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">route</span><span class="p">.</span><span class="nx">param</span><span class="p">(</span><span class="s1">&#39;month&#39;</span><span class="p">)));</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">calendar</span> <span class="o">=</span> <span class="nx">m</span><span class="p">.</span><span class="nx">prop</span><span class="p">(</span><span class="nx">calendar</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">year</span><span class="p">(),</span> <span class="k">this</span><span class="p">.</span><span class="nx">month</span><span class="p">()));</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">next</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">month</span><span class="p">()</span> <span class="o">===</span> <span class="mi">12</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">m</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">year</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/1&#39;</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">m</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="nx">self</span><span class="p">.</span><span class="nx">year</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">month</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">));</span>
+            <span class="p">}</span>
+        <span class="p">};</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">prev</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">month</span><span class="p">()</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">m</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">year</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/12&#39;</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">m</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="nx">self</span><span class="p">.</span><span class="nx">year</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">month</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">));</span>
+            <span class="p">}</span>
+        <span class="p">};</span>
+    <span class="p">},</span>
+    <span class="nx">view</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ctrl</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">dayOfWeekLabels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Sun&#39;</span><span class="p">,</span> <span class="s1">&#39;Mon&#39;</span><span class="p">,</span> <span class="s1">&#39;Tue&#39;</span><span class="p">,</span> <span class="s1">&#39;Wed&#39;</span><span class="p">,</span> <span class="s1">&#39;Thu&#39;</span><span class="p">,</span> <span class="s1">&#39;Fri&#39;</span><span class="p">,</span> <span class="s1">&#39;Sat&#39;</span><span class="p">];</span>
+        <span class="k">return</span> <span class="nx">m</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="p">[</span>
+            <span class="nx">m</span><span class="p">(</span><span class="s1">&#39;h3&#39;</span><span class="p">,</span> <span class="nx">i18n</span><span class="p">(</span><span class="s1">&#39;%{month} %{year}&#39;</span><span class="p">,</span> <span class="p">{</span>
+                <span class="nx">year</span><span class="o">:</span> <span class="nx">i18n</span><span class="p">(</span><span class="nx">ctrl</span><span class="p">.</span><span class="nx">year</span><span class="p">()),</span>
+                <span class="nx">month</span><span class="o">:</span> <span class="nx">i18n</span><span class="p">(</span><span class="nb">String</span><span class="p">(</span><span class="nx">ctrl</span><span class="p">.</span><span class="nx">month</span><span class="p">()))</span>
+            <span class="p">})),</span>
+            <span class="nx">m</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="p">[</span>
+                <span class="nx">m</span><span class="p">(</span><span class="s1">&#39;button&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">onclick</span><span class="o">:</span> <span class="nx">ctrl</span><span class="p">.</span><span class="nx">prev</span><span class="p">},</span> <span class="nx">i18n</span><span class="p">(</span><span class="s1">&#39;Previous Month&#39;</span><span class="p">)),</span>
+                <span class="nx">m</span><span class="p">(</span><span class="s1">&#39;button&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">onclick</span><span class="o">:</span> <span class="nx">ctrl</span><span class="p">.</span><span class="nx">next</span><span class="p">},</span> <span class="nx">i18n</span><span class="p">(</span><span class="s1">&#39;Next Month&#39;</span><span class="p">))</span>
+            <span class="p">]),</span>
+            <span class="nx">m</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">,</span> <span class="p">[</span>
+                <span class="nx">m</span><span class="p">(</span><span class="s1">&#39;thead&#39;</span><span class="p">,</span> <span class="p">[</span>
+                    <span class="nx">m</span><span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">,</span> <span class="nx">dayOfWeekLabels</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">label</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="k">return</span> <span class="nx">m</span><span class="p">(</span><span class="s1">&#39;th&#39;</span><span class="p">,</span> <span class="nx">i18n</span><span class="p">(</span><span class="nx">label</span><span class="p">));</span>
+                    <span class="p">}))</span>
+                <span class="p">]),</span>
+                <span class="nx">m</span><span class="p">(</span><span class="s1">&#39;tbody&#39;</span><span class="p">,</span> <span class="nx">ctrl</span><span class="p">.</span><span class="nx">calendar</span><span class="p">().</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">week</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">return</span> <span class="nx">m</span><span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">,</span> <span class="nx">week</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">day</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="k">return</span> <span class="nx">m</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">day</span> <span class="o">!==</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">?</span> <span class="nx">day</span> <span class="o">:</span> <span class="nx">m</span><span class="p">.</span><span class="nx">trust</span><span class="p">(</span><span class="s1">&#39;&amp;nbsp&#39;</span><span class="p">));</span>
+                    <span class="p">}));</span>
+                <span class="p">}))</span>
+            <span class="p">])</span>
+        <span class="p">]);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
 
-function main() {
-    i18n.translator.selectLanguage(Object.keys(translations), function (err, lang) {
-        i18n.translator.add(translations[lang] ? translations[lang] : translations.en);
-    });
-    m.mount(document.querySelector(&#39;#select&#39;), LanguageSelect);
-    m.route(document.querySelector(&#39;#calendar&#39;), &#39;/&#39;, {
-        &#39;/&#39;: JumpThisMonth,
-        &#39;/:year/:month&#39;: Calendar
-    });
-}
+<span class="kd">function</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">i18n</span><span class="p">.</span><span class="nx">translator</span><span class="p">.</span><span class="nx">selectLanguage</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">translations</span><span class="p">),</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">lang</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">i18n</span><span class="p">.</span><span class="nx">translator</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">translations</span><span class="p">[</span><span class="nx">lang</span><span class="p">]</span> <span class="o">?</span> <span class="nx">translations</span><span class="p">[</span><span class="nx">lang</span><span class="p">]</span> <span class="o">:</span> <span class="nx">translations</span><span class="p">.</span><span class="nx">en</span><span class="p">);</span>
+    <span class="p">});</span>
+    <span class="nx">m</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;#select&#39;</span><span class="p">),</span> <span class="nx">LanguageSelect</span><span class="p">);</span>
+    <span class="nx">m</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;#calendar&#39;</span><span class="p">),</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s1">&#39;/&#39;</span><span class="o">:</span> <span class="nx">JumpThisMonth</span><span class="p">,</span>
+        <span class="s1">&#39;/:year/:month&#39;</span><span class="o">:</span> <span class="nx">Calendar</span>
+    <span class="p">});</span>
+<span class="p">}</span>
 
-if (document.readyState !== &#39;loading&#39;) {
-    main();
-} else {
-    document.addEventListener(&#39;DOMContentLoaded&#39;, main);
-}
-&lt;/script&gt;
+<span class="k">if</span> <span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">!==</span> <span class="s1">&#39;loading&#39;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">main</span><span class="p">();</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;DOMContentLoaded&#39;</span><span class="p">,</span> <span class="nx">main</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 </pre></div>
-</div>
+</td></tr></table></div>
 </div>
 </div>
 

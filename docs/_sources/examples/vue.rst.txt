@@ -3,6 +3,10 @@ Vue Example
 
 `Vue <http://http://vuejs.org/>`_ is a progressive MVC framework. Core is small, but there many plug-ins to extend Vue.
 
+.. note::
+
+   This is a first version. I will add vue.js plugin to support vue 2.0.
+
 .. raw:: html
 
    <script type="text/javascript" src="../_static/i18n4v.js"></script>
@@ -114,7 +118,7 @@ Vue Example
                '<h3>{{ i18n("%{month} %{year}", {year: year, month: i18n(month) }) }}</h3>',
                '<button v-on:click="prev">{{ i18n("Previous Month") }}</button>',
                '<button v-on:click="next">{{ i18n("Next Month") }}</button>',
-               '<calendar v-bind:year="year" v-bind:month="month"></calendar>',
+               '<calendar :year="year" :month="month" :lang="lang"></calendar>',
            '</div>'
        ].join(''),
        created: function () {
@@ -138,6 +142,7 @@ Vue Example
            },
            select: function (lang) {
                i18n.translator.add(translations[lang]);
+               this.$forceUpdate();
            },
            i18n: i18n
        },
@@ -163,9 +168,9 @@ Vue Example
        });
 
        vm = new Vue({
-           router: router
+           router: router,
+           el: '#app-calendar'
        });
-       vm.$mount('#app-calendar');
    }
    
    if (document.readyState !== 'loading') {
@@ -178,7 +183,8 @@ Vue Example
 Source
 ------
 
-.. code:: html
+.. code-block:: html
+   :linenos:
 
    <script type="text/javascript" src="../_static/i18n4v.js"></script>
    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.js"></script>
@@ -289,7 +295,7 @@ Source
                '<h3>{{ i18n("%{month} %{year}", {year: year, month: i18n(month) }) }}</h3>',
                '<button v-on:click="prev">{{ i18n("Previous Month") }}</button>',
                '<button v-on:click="next">{{ i18n("Next Month") }}</button>',
-               '<calendar v-bind:year="year" v-bind:month="month"></calendar>',
+               '<calendar :year="year" :month="month" :lang="lang"></calendar>',
            '</div>'
        ].join(''),
        created: function () {
@@ -313,6 +319,7 @@ Source
            },
            select: function (lang) {
                i18n.translator.add(translations[lang]);
+               this.$forceUpdate();
            },
            i18n: i18n
        },
@@ -338,9 +345,9 @@ Source
        });
 
        vm = new Vue({
-           router: router
+           router: router,
+           el: '#app-calendar'
        });
-       vm.$mount('#app-calendar');
    }
    
    if (document.readyState !== 'loading') {

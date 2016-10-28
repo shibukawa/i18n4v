@@ -18,7 +18,8 @@ It has the following features:
 
 * Small runtime:
 
-  * Runtime is written in ES3 and just 1.6kb (minified and gzipped)
+  * Runtime is written in ES3 and just 1.6kb (minified and gzipped).
+  * Runtime has no dependency.
   * It is compatible with common.js and AMD and global reading with <script> tag.
 
 * It can run on browser:

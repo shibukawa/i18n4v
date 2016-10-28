@@ -73,9 +73,12 @@ Translator class
 
       Stores preferred language of a user. It is available only on browsers.
 
-   .. js:function:: selectLanguage(languageList : string[], callback : function(err:error, lang:string))
+   .. js:function:: selectLanguage(languageList : string[], callback : function(err:error, lang:string)) : Promise
 
       Returns preferred language from langaugeList from browsers' and node.js's environment.
+
+      If the JavaScript environment supports `Promise <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise>`_ and
+      ``callback`` is ommitted, it returns ``Promise``. 
 
       .. note::
 

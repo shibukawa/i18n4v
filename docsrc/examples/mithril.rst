@@ -159,7 +159,8 @@ Sample
 Source
 ------
 
-.. code:: html
+.. code-block:: html
+   :linenos:
 
    <script type="text/javascript" src="../_static/i18n4v.js"></script>
    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mithril/0.2.5/mithril.js"></script>
