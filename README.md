@@ -29,6 +29,10 @@ It has the following features:
 
 Core part of i18n is derived from [roddeh-i18n](http://i18njs.com/). Thank you roddeh.
 
+## Document
+
+https://i18n4v.js.org/
+
 ## Example
 
 Use with JavaScript:
@@ -41,9 +45,9 @@ const i18n = require('i18n4v');
 
 var mithrilComponent = {
     view(ctrl) {
-        return m("div", i18n("hello world");
+        return m("div", i18n("hello world"));
     }
-}
+};
 
 i18n.translator.add({
     values: {

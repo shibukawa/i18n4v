@@ -24,7 +24,7 @@ function Translator() {
         contexts: []
     };
     this.globalContext = {};
-    this.localStorage = null;
+    this.updateCallbacks = {};
 }
 
 Translator.prototype.translate = function (text, defaultNumOrFormatting, numOrFormattingOrContext, formattingOrContext, context) {
@@ -70,7 +70,21 @@ Translator.prototype.translate = function (text, defaultNumOrFormatting, numOrFo
     }
 };
 
-Translator.prototype.add = function (d) {
+Translator.prototype.addCallback = function (callback) {
+    var epoch = Date.now();
+    while (this.updateCallbacks[epoch]) {
+        epoch++;
+    }
+    this.updateCallbacks[epoch] = callback;
+    return epoch;
+};
+
+Translator.prototype.removeCallback = function (key) {
+    delete this.updateCallbacks[key];
+};
+
+Translator.prototype.add = function (d, lang) {
+    var results;
     if (d.values != null) {
         var ref = d.values;
         for (var k in ref) {
@@ -79,12 +93,17 @@ Translator.prototype.add = function (d) {
     }
     if (d.contexts != null) {
         var ref1 = d.contexts;
-        var results = [];
+        results = [];
         for (var i = 0, len = ref1.length; i < len; i++) {
             results.push(this.data.contexts.push(ref1[i]));
         }
-        return results;
     }
+    for (var callbackKey in this.updateCallbacks) {
+        if (this.updateCallbacks.hasOwnProperty(callbackKey)) {
+            this.updateCallbacks[callbackKey](lang);
+        }
+    }
+    return results;
 };
 
 Translator.prototype.setContext = function (key, value) {
@@ -257,6 +276,26 @@ Translator.prototype.setLanguage = function (language, storage) {
 };
 
 Translator.prototype.selectLanguage = function (languages, callback, storage) {
+    var self = this;
+    if (callback) {
+        this._selectLanguage(languages, callback, storage);
+        return;
+    }
+    if (typeof(Promise) === 'undefined') {
+        throw new Error('selectLanguage needs callback function or Promise should be supported');
+    } 
+    return new Promise(function (resolve, reject) {
+        self._selectLanguage(languages, function (err, lang) {
+            if (!err) {
+                reject(err);
+            } else {
+                resolve(lang);
+            }
+        }, storage);
+    });
+};
+
+Translator.prototype._selectLanguage = function (languages, callback, storage) {
     var preferredLanguages = [];
     function select() {
         for (var i = 0; i < preferredLanguages.length; i++) {

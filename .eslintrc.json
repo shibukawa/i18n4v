@@ -8,6 +8,7 @@
         "mocha": true
     },
     "globals": {
+        "Promise": true
     },
     "rules": {
         "semi": "error",
