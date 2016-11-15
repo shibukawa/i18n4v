@@ -107,6 +107,7 @@ else:
     if build_mdate < lib_mdate or build_mdate < test_mdate:
         subprocess.call(shlex.split('npm run build'))
 shutil.copy("../index.js", "_static/i18n4v.js")
+shutil.copy("../i18n4vue/index.js", "_static/i18n4vue.js")
 
 html_static_path = ['_static']
 

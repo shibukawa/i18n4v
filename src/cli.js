@@ -156,7 +156,7 @@ function findFiles(input, patterns) {
     });
 }
 
-function parseHTML(words, source, filename, fillCopy=false) {
+function parseHTML(words, source, filename, fillCopy) {
     const document = jsdom(source);
     const elems = document.querySelectorAll('[data-i18n]');
     for (var i = 0; i < elems.length; i++) {
@@ -185,7 +185,7 @@ function parseHTML(words, source, filename, fillCopy=false) {
 }
 
 
-function parseJavaScript(words, source, filename, fillCopy=false, targetFile=null) {
+function parseJavaScript(words, source, filename, fillCopy, targetFile) {
     var matchImport2 = matchImport;
     if (targetFile) {
         matchImport2 = new StatementPattern({

@@ -1,11 +1,12 @@
 /* eslint-env node, amd */
 (function (name, context, definition) {
-      if (typeof module !== 'undefined' && module.exports)
-            module.exports = definition();
-      else if (typeof define === 'function' && define.amd)
-            define(name, definition);
-      else
-            context[name] = definition();
+    if (typeof module !== 'undefined' && module.exports) {
+        module.exports = definition();
+    } else if (typeof define === 'function' && define.amd) {
+        define(name, definition);
+    } else {
+        context[name] = definition();
+    }
 })('i18n', this, function () {
 
 'use strict';

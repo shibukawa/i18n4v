@@ -1,0 +1,38 @@
+{
+  "name": "i18n4vue",
+  "version": "0.1.3",
+  "description": "Portable i18n library for vue.js",
+  "main": "./index.js",
+  "bin": {
+    "i18n4v": "./bin/i18n4v.js"
+  },
+  "scripts": {
+    "prebuild": "eslint index.js",
+    "build": "uglifyjs --support-ie8 --compress --mangle --source-map index.js.map -o index.min.js -- index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shibukawa/i18n4v"
+  },
+  "keywords": [
+    "internatinalization",
+    "localization",
+    "translation"
+  ],
+  "author": "Yoshiki Shibukawa",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^3.8.1",
+    "uglify-js": "^2.7.4"
+  },
+  "files": [
+    "index.js",
+    "index.min.js",
+    "index.js.map",
+    "README.md",
+    "LICENSE.md"
+  ],
+  "dependencies": {
+    "i18n4v": "^0.1.3"
+  }
+}

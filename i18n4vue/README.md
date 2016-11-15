@@ -1,14 +1,14 @@
-# i18n for Virtual DOM (``i18n4v``)
+# i18n for vue.js (``i18n4vue``)
 
 [![Build Status](https://secure.travis-ci.org/shibukawa/i18n4v.png?branch=master)](http://travis-ci.org/shibukawa/i18n4v)
 
 ```sh
-$ npm install i18n4v --save
+$ npm install i18n4vue --save
 ```
 
-``i18n4v`` is an internationalization helper library for browsers and node.js.
+``i18n4vue`` is an internationalization helper library for vue.js. It is a vue.js plugin of [i18n4v](https://i18n4v.js.org/).
 
-It has the following features:
+``i18n4v`` has the following features:
 
 * It supports standard internatinalization features:
   * Replacing words by key (original words can be used as keys too)
@@ -27,6 +27,11 @@ It has the following features:
   * To support server side rendering and CLI tools
 * It provides CLI tool to maintain translations
 
+```i18n4vue``` provides the following feature to your Vue.js environment:
+
+* ```v-i18n``` directive
+* ```i18n``` method
+
 Core part of i18n is derived from [roddeh-i18n](http://i18njs.com/). Thank you roddeh.
 
 ## Document
@@ -35,43 +40,37 @@ https://i18n4v.js.org/
 
 ## Example
 
-Use with JavaScript:
+### Initialize
 
 ```js
-// This sample uses with Mithril.
-// You can use any virtual DOM framework.
-const m = require('mithril');
-const i18n = require('i18n4v');
-
-var mithrilComponent = {
-    view(ctrl) {
-        return m("div", i18n("hello world"));
-    }
-};
-
-i18n.translator.add({
-    values: {
-        "hello world": "こんにちわ世界"
-    }
-});
+Vue.use(require('i18n4vue'));
 ```
 
-Use with static HTML:
+### Use directive
 
 ```html
-<article>
-   <h1 data-i18n>Monty Python</h1>
-</artice>
-    
-<script>
-i18n.translator.add({
-    values: {
-        "Monty Python": "モンティ・パイソン"
-    }
-});
-i18n.translator.applyToHTML();
-</script>
+<h3 v-i18n>Language Select</h3>
 ```
+
+If translation contains HTML tag, use ```.safe``` modifier:
+
+```html
+<h3 v-i18n.safe>Language Select</h3>
+```
+
+### Use method
+
+```html
+<th v-for="label in dayOfWeekLabels">{{ i18n(label) }}</th>
+```
+
+This form can use whole feature of [i18n4v](https://i18n4v.js.org/), including pluralisation feature:
+
+```html
+<div>{{ i18n('They have {{num}} records', 10) }}</div>
+```
+
+If you want to translate static HTML (outside of Virtual DOM), see [i18n4v's document](https://i18n4v.js.org/tutorial.html#translate-static-html).
 
 ## License
 

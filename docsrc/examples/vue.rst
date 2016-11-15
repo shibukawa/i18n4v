@@ -1,15 +1,50 @@
 Vue Example
 ===========
 
-`Vue <http://http://vuejs.org/>`_ is a progressive MVC framework. Core is small, but there many plug-ins to extend Vue.
+`Vue 2.0 <http://http://vuejs.org/>`_ is a progressive MVC framework. Core is small and fast, but there many plug-ins to extend Vue.
 
-.. note::
+i18n4v provides vue.js plugin, called **i18n4vue**.
 
-   This is a first version. I will add vue.js plugin to support vue 2.0.
+Install Plugin
+--------------
+
+.. code-block:: console
+
+   $ npm install i18n4vue --save
+
+Plugin Reference
+----------------
+
+You can register this plugin by using `Vue.use <https://vuejs.org/v2/api/#Vue-use>`_ method. 
+
+.. code-block:: javascript
+
+   Vue.use(require('i18n4vue'));
+
+It provides ``v-i18n`` directive and ``i18n()`` method:
+
+.. code-block:: html
+
+   <!-- text contents of tags that has v-i18n directive become translation key -->
+   <h3 v-i18n>Language Select</h3>
+
+   <!-- if translation contains HTML tags, use .safe modifier -->
+   <h3 v-i18n.safe>Language Select</h3>
+
+.. code-block:: html
+   
+   <th v-for="label in dayOfWeekLabels">{{ i18n(label) }}</th>
+
+   <!-- This form can use whole feature of i18n4, including pluralisation feature -->
+   <div>{{ i18n('They have {{num}} records', 10) }}</div>
+
+Sample Code
+-----------
 
 .. raw:: html
 
    <script type="text/javascript" src="../_static/i18n4v.js"></script>
+   <script type="text/javascript" src="../_static/i18n4vue.js"></script>
    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/2.0.1/vue-router.js"></script>
 
@@ -18,6 +53,9 @@ Vue Example
    </div>
 
    <script>
+   
+   Vue.use(i18n4vue);
+
    var router, vm;
    var translations = {
        en: {
@@ -112,13 +150,13 @@ Vue Example
        },
        template: [
            '<div>',
-               '<h3>{{ i18n("Language Select") }}</h3>',
+               '<h3 v-i18n>Language Select</h3>',
                '<button v-on:click="select(\'en\')">English</button>',
                '<button v-on:click="select(\'ja\')">Japanese</button>',
                '<h3>{{ i18n("%{month} %{year}", {year: year, month: i18n(month) }) }}</h3>',
-               '<button v-on:click="prev">{{ i18n("Previous Month") }}</button>',
-               '<button v-on:click="next">{{ i18n("Next Month") }}</button>',
-               '<calendar :year="year" :month="month" :lang="lang"></calendar>',
+               '<button v-on:click="prev" v-i18n>Previous Month</button>',
+               '<button v-on:click="next" v-i18n>Next Month</button>',
+               '<calendar :year="year" :month="month"></calendar>',
            '</div>'
        ].join(''),
        created: function () {
@@ -187,6 +225,7 @@ Source
    :linenos:
 
    <script type="text/javascript" src="../_static/i18n4v.js"></script>
+   <script type="text/javascript" src="../_static/i18n4vue.js"></script>
    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/2.0.1/vue-router.js"></script>
 
@@ -195,6 +234,9 @@ Source
    </div>
 
    <script>
+   
+   Vue.use(i18n4vue);
+
    var router, vm;
    var translations = {
        en: {
@@ -289,13 +331,13 @@ Source
        },
        template: [
            '<div>',
-               '<h3>{{ i18n("Language Select") }}</h3>',
+               '<h3 v-i18n>Language Select</h3>',
                '<button v-on:click="select(\'en\')">English</button>',
                '<button v-on:click="select(\'ja\')">Japanese</button>',
                '<h3>{{ i18n("%{month} %{year}", {year: year, month: i18n(month) }) }}</h3>',
-               '<button v-on:click="prev">{{ i18n("Previous Month") }}</button>',
-               '<button v-on:click="next">{{ i18n("Next Month") }}</button>',
-               '<calendar :year="year" :month="month" :lang="lang"></calendar>',
+               '<button v-on:click="prev" v-i18n>Previous Month</button>',
+               '<button v-on:click="next" v-i18n>Next Month</button>',
+               '<calendar :year="year" :month="month"></calendar>',
            '</div>'
        ].join(''),
        created: function () {
