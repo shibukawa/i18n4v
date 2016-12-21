@@ -151,10 +151,10 @@ Translator.prototype.translateText = function (text, num, formatting, context, d
     }
     var contextData = this.getContextData(this.data, context);
     if (contextData != null) {
-        result = this.findTranslation(text, num, formatting, contextData.values, defaultText);
+        result = this.findTranslation(text, num, formatting, contextData.values);
     }
     if (result == null) {
-        result = this.findTranslation(text, num, formatting, this.data.values, defaultText);
+        result = this.findTranslation(text, num, formatting, this.data.values);
     }
     if (result == null) {
         return this.useOriginalText(defaultText || text, num, formatting);
@@ -195,7 +195,10 @@ Translator.prototype.getContextData = function (data, context) {
         var equal = true;
         var ref1 = c.matches;
         for (var key in ref1) {
-            equal = equal && ref1[key] === context[key];
+            if (ref1[key] !== context[key]) {
+                equal = false;
+                break;
+            }
         }
         if (equal) {
             return c;

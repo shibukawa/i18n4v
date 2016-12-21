@@ -156,7 +156,7 @@ describe('default i18n', function () {
         assert(i18n("%n comments", 2) === "2 コメント");
     });
 
-    it('cant translate with short keys with that reverts to default value', function () {
+    it('can translate with short keys with that reverts to default value', function () {
         assert(i18n("_short_key", "This is a long piece of text") === "This is a long piece of text");
         assert(i18n("_monkeys") === "猿も木から落ちる");
     });
