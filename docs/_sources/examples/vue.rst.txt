@@ -1,7 +1,7 @@
 Vue Example
 ===========
 
-`Vue 2.0 <http://http://vuejs.org/>`_ is a progressive MVC framework. Core is small and fast, but there many plug-ins to extend Vue.
+`Vue 2.0 <https://vuejs.org/>`_ is a progressive JavaScript framework. Core is small and fast, but there many plug-ins to extend Vue.
 
 i18n4v provides vue.js plugin, called **i18n4vue**.
 
