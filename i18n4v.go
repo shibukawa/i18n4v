@@ -1,5 +1,5 @@
 /*
-i18n4v provides i18n feature including pluralisation support, replacing kes, contextual translation
+Package i18n4v provides i18n feature including pluralisation support, replacing kes, contextual translation
 to Golang. It is a member of https://i18n4v.js.org family. JavaScript runtime and this packages uses
 same translation format (JSON).
 
@@ -92,8 +92,9 @@ Of cource, you can use all features together that are described before:
         Replace{"name": "Jane", "album": "Hen's Night" },
         Context{"gender": "female" })
     // -> Jane uploaded 4 photos to her Hen's Night album
-*/
 
+This package is released under MIT license.
+*/
 package i18n4v
 
 import (
