@@ -1,3 +1,99 @@
+/*
+i18n4v provides i18n feature including pluralisation support, replacing kes, contextual translation
+to Golang. It is a member of https://i18n4v.js.org family. JavaScript runtime and this packages uses
+same translation format (JSON).
+
+It supports translation via default translator instance or independent translator instances.
+
+Default translator is good for command line tools.
+To use default translator, you can initialize via Add() function (and AddFromString(), MustAdd(),
+MustAddFromString()), and translate via global Translate() function.
+
+Independent translator is good for web services, each client have their own preferred languages
+(in Accept-Language header).
+To use independent translator, you can create via Craete() function (and CreateFromString(), MustCreate(),
+MustCreateFromStrgin()), and translate via Translate() method of the instance.
+
+The simplest translation is selecting words from language JSON:
+
+    i18n4v.MustAddFromString(`{
+        "values": {
+            "Cancel": "Cancelar"
+        }
+    }`)
+
+    _ := i18n4v.Translate
+
+    _("Cancel")  // -> Cancelar
+
+The following JSON provides pluralisation support.
+Each array contains matching pattern(minimum value and maximum value) and translation.
+null means math.MinInt64 or math.MaxInt64. %n and -%n are replaced with the number in parameter:
+
+    i18n4v.MustAddFromString(`{
+        "values": {
+            "%n comments": [
+                [0, 0, "%n comments"],
+                [1, 1, "%n comment"],
+                [2, null, "%n comments"]
+            ]
+        }
+    }`)
+
+    _ := i18n4v.Translate
+
+    _("%n comments", 1)  // -> 1 comment
+
+%{key} is replaced via replacement parameters. Parameter should be passed via Replace container
+(this is an alias of map[string]string):
+
+    _ := i18n4v.Translate
+
+    _("Welcome %{name}", i18n4v.Replace{"name":"John"})  // -> Welcome John
+
+If translation is missing, it passes through translation keys as a translations.
+You can pass text for fall back:
+
+    _ := i18n4v.Translate
+
+    _("_short_key", "This is a long piece of text")  // -> This is a long piece of text
+
+Context feature supports selecting translations from context (like gender).
+Of cource, you can use all features together that are described before:
+
+    MustAddFromString(`{
+        "contexts": [
+            {
+                "matches": {"gender": "male"},
+                "values": {
+                    "%{name} uploaded %n photos to their %{album} album": [
+                          [0, 0, "%{name} uploaded %n photos to his %{album} album"],
+                          [1, 1, "%{name} uploaded %n photo to his %{album} album"],
+                          [2, null, "%{name} uploaded %n photos to his %{album} album"]
+                    ]
+                }
+            },
+            {
+                "matches": {"gender":"female"},
+                "values": {
+                    "%{name} uploaded %n photos to their %{album} album": [
+                          [0, 0, "%{name} uploaded %n photos to her %{album} album"],
+                          [1, 1, "%{name} uploaded %n photo to her %{album} album"],
+                          [2, null, "%{name} uploaded %n photos to her %{album} album"]
+                    ]
+                }
+            }
+        ]
+    }`)
+
+    _ := i18n4v.Translate
+
+    _("%{name} uploaded %n photos to their %{album} album", 4,
+        Replace{"name": "Jane", "album": "Hen's Night" },
+        Context{"gender": "female" })
+    // -> Jane uploaded 4 photos to her Hen's Night album
+*/
+
 package i18n4v
 
 import (
@@ -9,7 +105,14 @@ import (
     "fmt"
 )
 
+/*
+Replace type is used for passing replacement parameters when translating.
+*/
 type Replace map[string]string
+
+/*
+Context type is used for passing context parameters when translating.
+*/
 type Context map[string]string
 
 type pluralisationEntry struct {
@@ -28,6 +131,11 @@ type contextEntry struct {
     values map[string]*translation
 }
 
+/*
+Translator type keeps translation dictionary and provides translation feature.
+
+This instance is created via Create() functions. Or you can use default instance.
+*/
 type Translator struct {
     values map[string]*translation
     globalContext Context
@@ -36,9 +144,16 @@ type Translator struct {
 
 var defaultFormatMap = Replace{}
 
+/*
+Translate method returns translated text.
+
+You can pass parameters like default text(string), count for pluralisation(int),
+replacement parameters(i18n4v.Replace), context parameters(i18n4v.Context).
+You can omit any parameters, but you should keep the order of them.
+*/
 func (t *Translator) Translate(text string, args ...interface{}) string {
-    var context Context = t.globalContext
-    var formatting Replace = defaultFormatMap
+    var context = t.globalContext
+    var formatting = defaultFormatMap
     var number int64
     var hasNumber bool
     var hasDefaultText bool
@@ -189,9 +304,8 @@ func convertNumber(value interface{}, defaultValue int64) (int64, bool) {
     if !ok {
         if value == nil {
             return defaultValue, true
-        } else {
-            return 0, false
         }
+        return 0, false
     }
     return int64(tempValue), true
 }
@@ -275,6 +389,11 @@ func (t *Translator) add(jsonBytes []byte) error {
     return nil
 }
 
+/*
+Create returns new Translator instance.
+
+If JSON format is invalid, it returns error.
+*/
 func Create(jsonBytes []byte) (*Translator, error) {
     result := &Translator{
         values: make(map[string]*translation),
@@ -287,6 +406,12 @@ func Create(jsonBytes []byte) (*Translator, error) {
     return result, err
 }
 
+/*
+MustCreate returns new Translator instance.
+
+If JSON format is invalid, it makes application panic.
+It is good for static initialization.
+*/
 func MustCreate(jsonBytes []byte) *Translator {
     t, err := Create(jsonBytes)
     if err != nil {
@@ -295,10 +420,23 @@ func MustCreate(jsonBytes []byte) *Translator {
     return t
 }
 
+/*
+CreateFromString returns new Translator instance.
+It is similar to Create, but it accepts string instead of []byte.
+
+If JSON format is invalid, it returns error.
+*/
 func CreateFromString(json string) (*Translator, error) {
     return Create([]byte(json))
 }
 
+/*
+MustCreateFromString returns new Translator instance.
+It is similar to MustCreate, but it accepts string instead of []byte.
+
+If JSON format is invalid, it makes application panic.
+It is good for static initialization.
+*/
 func MustCreateFromString(json string) *Translator {
     t, err := Create([]byte(json))
     if err != nil {
@@ -312,14 +450,30 @@ var defaultTranslator = &Translator{
     globalContext: make(Context),
 }
 
+/*
+Translate function returns translated text.
+
+It uses default Translator instance.
+*/
 func Translate(key string, args ...interface{}) string {
     return defaultTranslator.Translate(key, args...)
 }
 
+/*
+Add registers dictionary to default Translator instance.
+
+If JSON format is invalid, it returns error.
+*/
 func Add(jsonBytes []byte) error {
     return defaultTranslator.add(jsonBytes)
 }
 
+/*
+MustAdd registers dictionary to default Translator instance.
+
+If JSON format is invalid, it makes application panic.
+It is good for static initialization.
+*/
 func MustAdd(jsonBytes []byte) {
     err := defaultTranslator.add(jsonBytes)
     if err != nil {
@@ -327,14 +481,30 @@ func MustAdd(jsonBytes []byte) {
     }
 }
 
+/*
+AddFromString registers dictionary to default Translator instance.
+It is similar to Add, but it accepts string instead of []byte.
+
+If JSON format is invalid, it returns error.
+*/
 func AddFromString(json string) error {
     return Add([]byte(json))
 }
 
+/*
+MustAddFromString registers dictionary to default Translator instance.
+It is similar to MustAdd, but it accepts string instead of []byte.
+
+If JSON format is invalid, it makes application panic.
+It is good for static initialization.
+*/
 func MustAddFromString(json string) {
     MustAdd([]byte(json))
 }
 
+/*
+Reset clears default Translator instance.
+*/
 func Reset() {
     defaultTranslator.values = make(map[string]*translation)
     defaultTranslator.globalContext = make(Context)
