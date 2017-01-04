@@ -1,6 +1,6 @@
 {
   "name": "i18n4v",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Portable i18n library for virtual dom",
   "main": "./index.js",
   "bin": {
