@@ -303,7 +303,7 @@ Translator.prototype._selectLanguage = function (languages, callback, storage) {
     var preferredLanguages = [];
     function select() {
         for (var i = 0; i < preferredLanguages.length; i++) {
-            var lang = preferredLanguages[0];
+            var lang = preferredLanguages[i];
             if (languages.indexOf(lang) !== -1) {
                 return callback(null, lang);
             }
