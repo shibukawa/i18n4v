@@ -1,6 +1,11 @@
 Version History
 ===============
 
+0.2.1 (Jan.11.2017)
+--------------------
+
+* Add TypeScript type definition file.
+
 0.2.0 (Jan.11.2017)
 --------------------
 

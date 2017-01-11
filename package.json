@@ -1,7 +1,8 @@
 {
   "name": "i18n4v",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Portable i18n library for virtual dom",
+  "types": "./i18n4v.d.ts",
   "main": "./index.js",
   "bin": {
     "i18n4v": "./bin/i18n4v.js"
