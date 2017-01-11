@@ -69,22 +69,6 @@ Translator class
 
       It is combined method of :js:func:`resetData()` and :js:func:`resetContext()`.
 
-   .. js:function:: setLanguage(language : string)
-
-      Stores preferred language of a user. It is available only on browsers.
-
-   .. js:function:: selectLanguage(languageList : string[], callback : function(err:error, lang:string)) : Promise
-
-      Returns preferred language from langaugeList from browsers' and node.js's environment.
-
-      If the JavaScript environment supports `Promise <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise>`_ and
-      ``callback`` is ommitted, it returns ``Promise``. 
-
-      .. note::
-
-         There is no feature selecting preferred language from user's request 
-         for web applications on node.js now.
-
    .. js:function:: applyToHTML()
 
       Searches ``data-i18n`` attributes and replace text on current web page.
@@ -101,3 +85,44 @@ Translator class
 
       It creates a new instance of :js:class:`Translator`.
 
+   .. js:function:: setLanguage(language : string)
+
+      Stores preferred language of a user. It is available only on browsers.
+
+      .. versionchanged:: 0.2.0
+
+         This function is moved from ``Translator.prototype`` to ``i18n``.
+         Change your code like this
+
+         .. code-block:: js
+
+            // old code
+            i18n.translator.setLanguage('en');
+
+            // new code
+            i18n.setLanguage('en');
+
+   .. js:function:: selectLanguage(languageList : string[], callback : function(err:error, lang:string)) : Promise
+
+      Returns preferred language from langaugeList from browsers' and node.js's environment.
+
+      If the JavaScript environment supports `Promise <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise>`_ and
+      ``callback`` is ommitted, it returns ``Promise``. 
+
+      .. note::
+
+         There is no feature selecting preferred language from user's request 
+         for web applications on node.js now.
+
+      .. versionchanged:: 0.2.0
+
+         This function is moved from ``Translator.prototype`` to ``i18n``.
+         Change your code like this
+
+         .. code-block:: js
+
+            // old code
+            i18n.translator.selectLanguage(['en', 'es', 'fr', 'ge'], callback);
+
+            // new code
+            i18n.selectLanguage(['en', 'es', 'fr', 'ge'], callback);

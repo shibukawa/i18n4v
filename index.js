@@ -268,7 +268,26 @@ Translator.prototype.applyToHTML = function (doc) {
     } 
 };
 
-Translator.prototype.setLanguage = function (language, storage) {
+var translator = new Translator();
+
+var i18n = function () {
+    return translator.translate.apply(translator, arguments);
+}; 
+
+i18n.translator = translator;
+
+i18n.create = function (data) {
+    var trans = new Translator();
+    if (data != null) {
+        trans.add(data);
+    }
+    trans.translate.create = i18n.create;
+    return function () {
+        return trans.translate.apply(trans, arguments);
+    }; 
+};
+
+i18n.setLanguage = function (language, storage) {
     if (!storage && typeof(localStorage) !== 'undefined') {
         storage = localStorage;
     }
@@ -279,27 +298,7 @@ Translator.prototype.setLanguage = function (language, storage) {
     }
 };
 
-Translator.prototype.selectLanguage = function (languages, callback, storage) {
-    var self = this;
-    if (callback) {
-        this._selectLanguage(languages, callback, storage);
-        return;
-    }
-    if (typeof(Promise) === 'undefined') {
-        throw new Error('selectLanguage needs callback function or Promise should be supported');
-    } 
-    return new Promise(function (resolve, reject) {
-        self._selectLanguage(languages, function (err, lang) {
-            if (!err) {
-                reject(err);
-            } else {
-                resolve(lang);
-            }
-        }, storage);
-    });
-};
-
-Translator.prototype._selectLanguage = function (languages, callback, storage) {
+function _selectLanguage(languages, callback, storage) {
     var preferredLanguages = [];
     function select() {
         for (var i = 0; i < preferredLanguages.length; i++) {
@@ -335,25 +334,25 @@ Translator.prototype._selectLanguage = function (languages, callback, storage) {
         }
         select();
     }
-};
+}
 
-var translator = new Translator();
-
-var i18n = function () {
-    return translator.translate.apply(translator, arguments);
-}; 
-
-i18n.translator = translator;
-
-i18n.create = function (data) {
-    var trans = new Translator();
-    if (data != null) {
-        trans.add(data);
+i18n.selectLanguage = function (languages, callback, storage) {
+    if (callback) {
+        _selectLanguage(languages, callback, storage);
+        return;
     }
-    trans.translate.create = i18n.create;
-    return function () {
-        return trans.translate.apply(trans, arguments);
-    }; 
+    if (typeof(Promise) === 'undefined') {
+        throw new Error('selectLanguage needs callback function or Promise should be supported');
+    } 
+    return new Promise(function (resolve, reject) {
+        _selectLanguage(languages, function (err, lang) {
+            if (!err) {
+                reject(err);
+            } else {
+                resolve(lang);
+            }
+        }, storage);
+    });
 };
 
 return i18n;

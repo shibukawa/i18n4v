@@ -36,6 +36,9 @@ It has the following features:
 
 Core part of i18n is derived from `roddeh-i18n <http://i18njs.com/>`_. Thank you roddeh.
 
+Do you want to use Golang on your server? Yes! You can use `Golang edition <https://godoc.org/github.com/shibukawa/i18n4v>`_ of this library.
+You can share same translation fileas between JavaScript and Golang.
+
 Content
 -------
 
@@ -46,6 +49,7 @@ Content
    cli
    api
    examples
+   history
 
 .. toctree::
    :hidden:

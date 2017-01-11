@@ -201,7 +201,7 @@ Selecting Preferred Language
 
 .. code:: js
 
-   i18n.translator.selectLanguage(['en', 'de', 'fr'], function (err, lang) {
+   i18n.selectLanguage(['en', 'de', 'fr'], function (err, lang) {
        // If there is no good choice, it returns null
        if (!lang) {
            lang = 'en';
@@ -230,7 +230,7 @@ If your project is small and bundling all language files are not expensive, the 
        de: require('./languages/de.json')
    }
 
-   i18n.translator.selectLanguage(['en', 'de', 'fr'], function (err, lang) {
+   i18n.selectLanguage(['en', 'de', 'fr'], function (err, lang) {
        i18n.translator.add(languages[lang] ? languages[lang] : languages.en);
    });
 
@@ -238,4 +238,4 @@ You can set preferred language manually. It feature is only on browser. It is st
 
 .. code:: js
 
-   i18n.translator.setLanguage('tlh');
+   i18n.setLanguage('tlh');

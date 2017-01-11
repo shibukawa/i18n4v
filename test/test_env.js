@@ -12,7 +12,7 @@ describe('language select', () => {
     it('can find language of current environment', done => {
         locale((err, lang) => {
             var languages = ['en', 'de', 'fr', 'ja', lang];
-            i18n.translator.selectLanguage(languages, (err, selectedLanguage) => {
+            i18n.selectLanguage(languages, (err, selectedLanguage) => {
                 assert(lang === selectedLanguage);
                 done();
             });
@@ -22,7 +22,7 @@ describe('language select', () => {
     it('can find language of current environment with Promise', done => {
         locale((err, lang) => {
             var languages = ['en', 'de', 'fr', 'ja', lang];
-            i18n.translator.selectLanguage(languages)
+            i18n.selectLanguage(languages)
             .then(selectedLanguage => {
                 console.log("then", selectedLanguage);
                 assert(lang === selectedLanguage);
@@ -41,16 +41,16 @@ describe('language select', () => {
        });
 
        it('can store/restore words', done => {
-           i18n.translator.setLanguage('tlh', localStorage);
-           i18n.translator.selectLanguage(['tlh', 'en', 'ja'], (err, selectedLanguage) => {
+           i18n.setLanguage('tlh', localStorage);
+           i18n.selectLanguage(['tlh', 'en', 'ja'], (err, selectedLanguage) => {
                assert(selectedLanguage === 'tlh');
                done();
            }, localStorage);
        }); 
 
        it('can store/restore words with Promise', () => {
-           i18n.translator.setLanguage('tlh', localStorage);
-           return i18n.translator.selectLanguage(['tlh', 'en', 'ja'], null, localStorage)
+           i18n.setLanguage('tlh', localStorage);
+           return i18n.selectLanguage(['tlh', 'en', 'ja'], null, localStorage)
            .then(selectedLanguage => {
                console.log("then", selectedLanguage);
                assert(selectedLanguage === 'tlh');

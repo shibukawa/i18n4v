@@ -29,6 +29,9 @@ It has the following features:
 
 Core part of i18n is derived from [roddeh-i18n](http://i18njs.com/). Thank you roddeh.
 
+Do you want to use Golang on your server? Yes! You can use [Golang edition](https://godoc.org/github.com/shibukawa/i18n4v) of this library.
+You can share same translation fileas between JavaScript and Golang.
+
 ## Document
 
 https://i18n4v.js.org/
@@ -80,3 +83,13 @@ i18n.translator.applyToHTML();
 ## Repository
 
 https://github.com/shibukawa/i18n4v
+
+## HISTORY
+
+* 0.1.X
+
+     * Released at Oct. 26. 2016
+
+* 0.2.X
+
+     * Released at Jan. 11. 2017

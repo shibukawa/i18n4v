@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>API Reference &#8212; i18n for virtual dom 0.1.5 documentation</title>
+    <title>API Reference &#8212; i18n for virtual dom 0.2.0 documentation</title>
     
     <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1.5',
+        VERSION:     '0.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -31,7 +31,7 @@
   </head>
   <body role="document">
       <div class="header" role="banner"><h1 class="heading"><a href="index.html">
-          <span>i18n for virtual dom 0.1.5 documentation</span></a></h1>
+          <span>i18n for virtual dom 0.2.0 documentation</span></a></h1>
         <h2 class="heading"><span>API Reference</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
@@ -122,25 +122,6 @@ It has property that points <code class="docutils literal"><span class="pre">Tra
 <dt id="reset">
 <code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>It is combined method of <a class="reference internal" href="#resetData" title="resetData"><code class="xref js js-func docutils literal"><span class="pre">resetData()</span></code></a> and <a class="reference internal" href="#resetContext" title="resetContext"><code class="xref js js-func docutils literal"><span class="pre">resetContext()</span></code></a>.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="setLanguage">
-<code class="descname">setLanguage</code><span class="sig-paren">(</span><em>language : string</em><span class="sig-paren">)</span><a class="headerlink" href="#setLanguage" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stores preferred language of a user. It is available only on browsers.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="selectLanguage(languageList : string[], callback : function(err:error, lang:string)) : Promise">
-<code class="descname">selectLanguage(languageList : string[], callback : function(err:error, lang:string)) : Promise</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#selectLanguage(languageList : string[], callback : function(err:error, lang:string)) : Promise" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns preferred language from langaugeList from browsers&#8217; and node.js&#8217;s environment.</p>
-<p>If the JavaScript environment supports <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a> and
-<code class="docutils literal"><span class="pre">callback</span></code> is ommitted, it returns <code class="docutils literal"><span class="pre">Promise</span></code>.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">There is no feature selecting preferred language from user&#8217;s request
-for web applications on node.js now.</p>
-</div>
 </dd></dl>
 
 <dl class="function">
