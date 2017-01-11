@@ -52,17 +52,68 @@
 <h1>Use from TypeScript<a class="headerlink" href="#use-from-typescript" title="Permalink to this headline">¶</a></h1>
 <p>i18n4v bundles <code class="docutils literal"><span class="pre">.d.ts</span></code> file and it is registered at <code class="docutils literal"><span class="pre">types</span></code> field of <code class="docutils literal"><span class="pre">package.json</span></code>.
 You can download library from npm and use it without any settings.</p>
+<div class="section" id="download-and-use">
+<h2>Download and Use<a class="headerlink" href="#download-and-use" title="Permalink to this headline">¶</a></h2>
+<div class="literal-block-wrapper container" id="id1">
+<div class="code-block-caption"><span class="caption-text">install library via npm</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ npm install i18n4v
 </pre></div>
 </div>
+</div>
+<div class="literal-block-wrapper container" id="id2">
+<div class="code-block-caption"><span class="caption-text">main.ts</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
 <div class="highlight-typescript"><div class="highlight"><pre><span></span><span class="c1">// use via require</span>
 <span class="kr">import</span> <span class="nx">i18n</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;i18n4v&quot;</span><span class="p">);</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">i18n</span><span class="p">(</span><span class="s2">&quot;Hello World&quot;</span><span class="p">));</span>
 </pre></div>
 </div>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>// compile and concat
-$ browserify -p tsify -o main.js main.ts
+</div>
+</div>
+<div class="section" id="build-with-browserify">
+<h2>Build with Browserify<a class="headerlink" href="#build-with-browserify" title="Permalink to this headline">¶</a></h2>
+<div class="literal-block-wrapper container" id="id3">
+<div class="code-block-caption"><span class="caption-text">compile and concat</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ browserify -p tsify -o main.js main.ts
 </pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="build-with-webpack">
+<h2>Build with WebPack<a class="headerlink" href="#build-with-webpack" title="Permalink to this headline">¶</a></h2>
+<div class="literal-block-wrapper container" id="id4">
+<div class="code-block-caption"><span class="caption-text">webpack.config.js</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-js"><div class="highlight"><pre><span></span><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">entry</span><span class="o">:</span> <span class="p">[</span>
+    <span class="s1">&#39;./main.ts&#39;</span>
+  <span class="p">],</span>
+  <span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;dist&#39;</span><span class="p">,</span>
+    <span class="nx">filename</span><span class="o">:</span> <span class="s1">&#39;bundle.js&#39;</span>
+  <span class="p">},</span>
+  <span class="nx">resolve</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;.tsx&#39;</span><span class="p">,</span> <span class="s1">&#39;.ts&#39;</span><span class="p">,</span> <span class="s1">&#39;.js&#39;</span><span class="p">]</span>
+  <span class="p">},</span>
+  <span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">loaders</span><span class="o">:</span> <span class="p">[</span>
+      <span class="p">{</span> <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.ts(x?)$/</span><span class="p">,</span> <span class="nx">loader</span><span class="o">:</span> <span class="s1">&#39;ts-loader&#39;</span> <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper container" id="id5">
+<div class="code-block-caption"><span class="caption-text">tsconfig.json</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{}</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper container" id="id6">
+<div class="code-block-caption"><span class="caption-text">compile and concat</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ webpack
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 
