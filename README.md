@@ -83,13 +83,3 @@ i18n.translator.applyToHTML();
 ## Repository
 
 https://github.com/shibukawa/i18n4v
-
-## HISTORY
-
-* 0.1.X
-
-     * Released at Oct. 26. 2016
-
-* 0.2.X
-
-     * Released at Jan. 11. 2017

@@ -48,7 +48,12 @@ Content
    tutorial
    cli
    api
+   typescript
    examples
+
+.. toctree::
+   :maxdepth: 1
+
    history
 
 .. toctree::
