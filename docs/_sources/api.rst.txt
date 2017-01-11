@@ -73,7 +73,10 @@ Translator class
 
       Searches ``data-i18n`` attributes and replace text on current web page.
 
-.. js:function: i18n(source:string[, count:number[, formatParams:object[, context:object]]]) : string
+``i18n()`` funciton
+-------------------
+
+.. js:function:: i18n(source:string[, count:number[, formatParams:object[, context:object]]]) : string
 
    This is a ``translate()`` method of default instance of :js:class:`Translator`.
 
