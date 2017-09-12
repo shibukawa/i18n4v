@@ -7,6 +7,7 @@ import (
 	"math"
 	"strconv"
 	"strings"
+	"golang.org/x/text/language"
 )
 
 /*
@@ -412,4 +413,7 @@ Reset clears default Translator instance.
 func Reset() {
 	defaultTranslator.values = make(map[string]*translation)
 	defaultTranslator.globalContext = make(Context)
+	translators = make(map[language.Tag]*Translator)
+	languages = []language.Tag{}
+	matcher = nil
 }
