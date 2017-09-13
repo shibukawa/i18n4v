@@ -101,6 +101,10 @@ func TestReplace(t *testing.T) {
 		t.Errorf("It should replace placeholder with passed values and be 'Welcome John', but %s",
 			en.Translate("Welcome %{name}", Replace{"name": "John"}))
 	}
+	r := en.Translate("Your charge is %{charge} dollars", Replace{"charge": 100})
+	if r != "Your charge is 100 dollars" {
+		t.Errorf("It should replace placeholder with passed values and be 'Your charge is 100 dollars', but %s", r)
+	}
 }
 
 func TestDefaultText(t *testing.T) {

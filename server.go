@@ -2,8 +2,8 @@ package i18n4v
 
 import (
 	"golang.org/x/text/language"
-	"sync"
 	"net/http"
+	"sync"
 )
 
 var translators = make(map[language.Tag]*Translator)
@@ -11,7 +11,7 @@ var languages = []language.Tag{}
 var matcher language.Matcher
 var lock sync.Mutex
 
-type TranslatorFunction func(text string, args ...interface{})string
+type TranslatorFunction func(text string, args ...interface{}) string
 
 /*
 AddWithTag registers dictionary to translator lists.
@@ -89,7 +89,7 @@ func MustAddFromStringWithTag(tag language.Tag, json string) {
 
 /*
 SelectTranslator returns Translator instance from registered ones.
- */
+*/
 func SelectTranslator(lang string) *Translator {
 	{
 		lock.Lock()
@@ -116,7 +116,7 @@ func Select(lang string) TranslatorFunction {
 	}
 	tag, _ := language.MatchStrings(matcher, lang)
 	translator := translators[tag]
-	return func(text string, args ...interface{})string {
+	return func(text string, args ...interface{}) string {
 		return translator.Translate(text, args...)
 	}
 }

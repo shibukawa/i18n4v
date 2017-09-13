@@ -4,16 +4,16 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/pkg/errors"
+	"golang.org/x/text/language"
 	"math"
 	"strconv"
 	"strings"
-	"golang.org/x/text/language"
 )
 
 /*
 Replace type is used for passing replacement parameters when translating.
 */
-type Replace map[string]string
+type Replace map[string]interface{}
 
 /*
 Context type is used for passing context parameters when translating.
@@ -185,7 +185,7 @@ func applyFormattingWithNumber(text string, num int64, format Replace) string {
 	i := 2
 	for key, value := range format {
 		replaceMap[i*2] = "%{" + key + "}"
-		replaceMap[i*2+1] = value
+		replaceMap[i*2+1] = fmt.Sprintf("%v", value)
 		i++
 	}
 	replacer := strings.NewReplacer(replaceMap...)
@@ -197,7 +197,7 @@ func applyFormatting(text string, format Replace) string {
 	i := 0
 	for key, value := range format {
 		replaceMap[i*2] = "%{" + key + "}"
-		replaceMap[i*2+1] = value
+		replaceMap[i*2+1] = fmt.Sprintf("%v", value)
 		i++
 	}
 	replacer := strings.NewReplacer(replaceMap...)

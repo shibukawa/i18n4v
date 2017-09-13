@@ -1,11 +1,9 @@
 package i18n4v
 
 import (
-	"testing"
 	"golang.org/x/text/language"
+	"testing"
 )
-
-
 
 func TestSelectLanguageCode(t *testing.T) {
 	MustAddFromStringWithTag(language.English, "{}")
@@ -15,7 +13,7 @@ func TestSelectLanguageCode(t *testing.T) {
         }
     }`)
 
-    // "en"
+	// "en"
 	__ := Select("en")
 	if __("Cancel") != "Cancel" {
 		t.Errorf("Translation error: %s", __("Cancel"))
