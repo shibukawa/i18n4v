@@ -6,12 +6,12 @@ import (
 )
 
 func TestSelectLanguageCode(t *testing.T) {
-	MustAddFromStringWithTag(language.English, "{}")
-	MustAddFromStringWithTag(language.Japanese, `{
+	MustAddFromString("{}", language.English)
+	MustAddFromString(`{
         "values": {
             "Cancel": "キャンセル"
         }
-    }`)
+    }`, language.Japanese)
 
 	// "en"
 	__ := Select("en")

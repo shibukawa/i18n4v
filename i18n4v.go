@@ -5,20 +5,21 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	"golang.org/x/text/language"
+	"io"
 	"math"
 	"strconv"
 	"strings"
+	"sync"
 )
 
-/*
-Replace type is used for passing replacement parameters when translating.
-*/
+// Replace type is used for passing replacement parameters when translating.
 type Replace map[string]interface{}
 
-/*
-Context type is used for passing context parameters when translating.
-*/
+// Context type is used for passing context parameters when translating.
 type Context map[string]string
+
+// TranslatorFunction is a type of translation function
+type TranslatorFunction func(text string, args ...interface{}) string
 
 type pluralisationEntry struct {
 	min         int64
@@ -48,6 +49,10 @@ type Translator struct {
 }
 
 var defaultFormatMap = Replace{}
+var translators = make(map[language.Tag]*Translator)
+var languages = []language.Tag{}
+var matcher language.Matcher
+var lock sync.Mutex
 
 /*
 Translate method returns translated text.
@@ -260,11 +265,12 @@ func parseValue(context string, values map[string]*translation, key string, valu
 	return nil
 }
 
-func (t *Translator) add(jsonBytes []byte) error {
+func (t *Translator) add(reader io.Reader) error {
 	loader := &tmpLoader{
 		Values: make(map[string]interface{}),
 	}
-	err := json.Unmarshal(jsonBytes, loader)
+	dec := json.NewDecoder(reader)
+	err := dec.Decode(loader)
 	if err != nil {
 		return errors.Wrap(err, "json parse error")
 	}
@@ -294,17 +300,21 @@ func (t *Translator) add(jsonBytes []byte) error {
 	return nil
 }
 
+func (t *Translator) AddWord(key, value string) {
+	parseValue("root values", t.values, key, value)
+}
+
 /*
 Create returns new Translator instance.
 
 If JSON format is invalid, it returns error.
 */
-func Create(jsonBytes []byte) (*Translator, error) {
+func Create(reader io.Reader) (*Translator, error) {
 	result := &Translator{
 		values:        make(map[string]*translation),
 		globalContext: make(Context),
 	}
-	err := result.add(jsonBytes)
+	err := result.add(reader)
 	if err != nil {
 		return nil, err
 	}
@@ -317,8 +327,8 @@ MustCreate returns new Translator instance.
 If JSON format is invalid, it makes application panic.
 It is good for static initialization.
 */
-func MustCreate(jsonBytes []byte) *Translator {
-	t, err := Create(jsonBytes)
+func MustCreate(reader io.Reader) *Translator {
+	t, err := Create(reader)
 	if err != nil {
 		panic(err)
 	}
@@ -332,7 +342,7 @@ It is similar to Create, but it accepts string instead of []byte.
 If JSON format is invalid, it returns error.
 */
 func CreateFromString(json string) (*Translator, error) {
-	return Create([]byte(json))
+	return Create(strings.NewReader(json))
 }
 
 /*
@@ -343,7 +353,7 @@ If JSON format is invalid, it makes application panic.
 It is good for static initialization.
 */
 func MustCreateFromString(json string) *Translator {
-	t, err := Create([]byte(json))
+	t, err := Create(strings.NewReader(json))
 	if err != nil {
 		panic(err)
 	}
@@ -368,9 +378,34 @@ func Translate(key string, args ...interface{}) string {
 Add registers dictionary to default Translator instance.
 
 If JSON format is invalid, it returns error.
+
+If tag is specified as 2nd parameter, it registers dictionary to specified language translator.
+You can access the registered translator with Select, SelectTranslator
+SelectTranslatorWithRequest, SelectWithRequest functions
 */
-func Add(jsonBytes []byte) error {
-	return defaultTranslator.add(jsonBytes)
+func Add(reader io.Reader, tag ...language.Tag) error {
+	lock.Lock()
+	defer lock.Unlock()
+
+	switch len(tag) {
+	case 0:
+		return defaultTranslator.add(reader)
+	case 1:
+		translator, ok := translators[tag[0]]
+		if !ok {
+			translator, err := Create(reader)
+			if err != nil {
+				return err
+			}
+			translators[tag[0]] = translator
+			languages = append(languages, tag[0])
+			matcher = nil
+			return nil
+		}
+		return translator.add(reader)
+	default:
+		return errors.New("Only one tag is acceptable")
+	}
 }
 
 /*
@@ -378,9 +413,13 @@ MustAdd registers dictionary to default Translator instance.
 
 If JSON format is invalid, it makes application panic.
 It is good for static initialization.
+
+If tag is specified as 2nd parameter, it registers dictionary to specified language translator.
+You can access the registered translator with Select, SelectTranslator
+SelectTranslatorWithRequest, SelectWithRequest functions
 */
-func MustAdd(jsonBytes []byte) {
-	err := defaultTranslator.add(jsonBytes)
+func MustAdd(reader io.Reader, tag ...language.Tag) {
+	err := Add(reader, tag...)
 	if err != nil {
 		panic(err)
 	}
@@ -391,9 +430,16 @@ AddFromString registers dictionary to default Translator instance.
 It is similar to Add, but it accepts string instead of []byte.
 
 If JSON format is invalid, it returns error.
+
+If tag is specified as 2nd parameter, it registers dictionary to specified language translator.
+You can access the registered translator with Select, SelectTranslator
+SelectTranslatorWithRequest, SelectWithRequest functions
 */
-func AddFromString(json string) error {
-	return Add([]byte(json))
+func AddFromString(json string, tag ...language.Tag) error {
+	lock.Lock()
+	defer lock.Unlock()
+
+	return Add(strings.NewReader(json), tag...)
 }
 
 /*
@@ -402,9 +448,33 @@ It is similar to MustAdd, but it accepts string instead of []byte.
 
 If JSON format is invalid, it makes application panic.
 It is good for static initialization.
+
+If tag is specified as 2nd parameter, it registers dictionary to specified language translator.
+You can access the registered translator with Select, SelectTranslator
+SelectTranslatorWithRequest, SelectWithRequest functions
 */
-func MustAddFromString(json string) {
-	MustAdd([]byte(json))
+func MustAddFromString(json string, tag ...language.Tag) {
+	MustAdd(strings.NewReader(json), tag...)
+}
+
+/*
+AddWord adds key and value pair to existing dictionary.
+It is good for adding long text like email/html templates.
+*/
+func AddWord(key, value string, tag ...language.Tag) error {
+	switch len(tag) {
+	case 0:
+		defaultTranslator.AddWord(key, value)
+	case 1:
+		translator, ok := translators[tag[0]]
+		if !ok {
+			return errors.New("Specified tag is not registered")
+		}
+		translator.AddWord(key, value)
+	default:
+		return errors.New("Only one tag is acceptable")
+	}
+	return nil
 }
 
 /*
